@@ -11,7 +11,7 @@ public interface GroceryItemService {
 
     List<GroceryItemResponse> getUserGroceryItems();
 
-    GroceryItemResponse getUserGroceryItemById(Long id);
+    GroceryItemResponse getGroceryItemById(Long id);
 
     GroceryItemResponse updateGroceryItem(Long id, GroceryItemRequest request);
 

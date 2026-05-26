@@ -68,7 +68,7 @@ public class GroceryItemServiceImpl implements GroceryItemService {
     }
 
     @Override
-    public GroceryItemResponse getUserGroceryItemById(Long id) {
+    public GroceryItemResponse getGroceryItemById(Long id) {
 
         GroceryItem item = getUserOwnedGroceryItem(id);
 
