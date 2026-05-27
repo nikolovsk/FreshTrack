@@ -1,6 +1,7 @@
-package com.freshtrack.backend.exception;
+package com.freshtrack.backend.exception.handler;
 
 import com.freshtrack.backend.dto.ApiError;
+import com.freshtrack.backend.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
