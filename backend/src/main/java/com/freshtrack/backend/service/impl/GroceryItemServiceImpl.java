@@ -17,6 +17,7 @@ import com.freshtrack.backend.repository.UserRepository;
 import com.freshtrack.backend.service.GroceryItemService;
 import com.freshtrack.backend.specification.GroceryItemSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -72,7 +73,8 @@ public class GroceryItemServiceImpl implements GroceryItemService {
                 .and(GroceryItemSpecification.hasCategory(categoryId))
                 .and(GroceryItemSpecification.hasStatus(status));
 
-        return groceryItemRepository.findAll(specification)
+        return groceryItemRepository
+                .findAll(specification, Sort.by(Sort.Direction.ASC, "expirationDate"))
                 .stream()
                 .map(mapper::toResponse)
                 .toList();
