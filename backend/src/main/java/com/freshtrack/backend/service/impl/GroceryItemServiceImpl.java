@@ -1,5 +1,6 @@
 package com.freshtrack.backend.service.impl;
 
+import com.freshtrack.backend.dto.GroceryItemFilter;
 import com.freshtrack.backend.dto.GroceryItemRequest;
 import com.freshtrack.backend.dto.GroceryItemResponse;
 import com.freshtrack.backend.entity.Category;
@@ -14,7 +15,9 @@ import com.freshtrack.backend.repository.CategoryRepository;
 import com.freshtrack.backend.repository.GroceryItemRepository;
 import com.freshtrack.backend.repository.UserRepository;
 import com.freshtrack.backend.service.GroceryItemService;
+import com.freshtrack.backend.specification.GroceryItemSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +38,6 @@ public class GroceryItemServiceImpl implements GroceryItemService {
 
         Long userId = getLoggedInUserId();
 
-        User user = userRepository.getReferenceById(userId);
-
         Category category = categoryRepository.findById(request.categoryId())
                 .orElseThrow(() -> new CategoryNotFoundException(request.categoryId()));
 
@@ -48,7 +49,7 @@ public class GroceryItemServiceImpl implements GroceryItemService {
                 .expirationDate(request.expirationDate())
                 .status(determineStatus(request.expirationDate()))
                 .category(category)
-                .user(user)
+                .user(User.builder().id(userId).build())
                 .build();
 
         GroceryItem saved = groceryItemRepository.save(item);
@@ -57,11 +58,21 @@ public class GroceryItemServiceImpl implements GroceryItemService {
     }
 
     @Override
-    public List<GroceryItemResponse> getUserGroceryItems() {
+    public List<GroceryItemResponse> getUserGroceryItems(GroceryItemFilter filter) {
 
         Long userId = getLoggedInUserId();
 
-        return groceryItemRepository.findByUserId(userId)
+        String search = filter != null ? filter.search() : null;
+        Long categoryId = filter != null ? filter.categoryId() : null;
+        GroceryStatus status = filter != null ? filter.status() : null;
+
+        Specification<GroceryItem> specification = Specification
+                .where(GroceryItemSpecification.hasUserId(userId))
+                .and(GroceryItemSpecification.nameContains(search))
+                .and(GroceryItemSpecification.hasCategory(categoryId))
+                .and(GroceryItemSpecification.hasStatus(status));
+
+        return groceryItemRepository.findAll(specification)
                 .stream()
                 .map(mapper::toResponse)
                 .toList();

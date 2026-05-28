@@ -1,5 +1,6 @@
 package com.freshtrack.backend.service;
 
+import com.freshtrack.backend.dto.GroceryItemFilter;
 import com.freshtrack.backend.dto.GroceryItemRequest;
 import com.freshtrack.backend.dto.GroceryItemResponse;
 
@@ -9,7 +10,7 @@ public interface GroceryItemService {
 
     GroceryItemResponse createGroceryItem(GroceryItemRequest request);
 
-    List<GroceryItemResponse> getUserGroceryItems();
+    List<GroceryItemResponse> getUserGroceryItems(GroceryItemFilter filter);
 
     GroceryItemResponse getGroceryItemById(Long id);
 

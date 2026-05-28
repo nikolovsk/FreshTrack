@@ -1,5 +1,6 @@
 package com.freshtrack.backend.controller;
 
+import com.freshtrack.backend.dto.GroceryItemFilter;
 import com.freshtrack.backend.dto.GroceryItemRequest;
 import com.freshtrack.backend.dto.GroceryItemResponse;
 import com.freshtrack.backend.service.GroceryItemService;
@@ -24,8 +25,8 @@ public class GroceryItemController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GroceryItemResponse>> getAllGroceries() {
-        return ResponseEntity.ok(groceryItemService.getUserGroceryItems());
+    public ResponseEntity<List<GroceryItemResponse>> getAllGroceries(@ModelAttribute GroceryItemFilter filter) {
+        return ResponseEntity.ok(groceryItemService.getUserGroceryItems(filter));
     }
 
     @GetMapping("/{id}")
