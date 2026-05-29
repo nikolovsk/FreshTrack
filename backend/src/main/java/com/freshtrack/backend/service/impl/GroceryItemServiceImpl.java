@@ -22,8 +22,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
+
+import static com.freshtrack.backend.util.GroceryStatusUtil.determineStatus;
 
 @Service
 @RequiredArgsConstructor
@@ -124,21 +125,6 @@ public class GroceryItemServiceImpl implements GroceryItemService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email))
                 .getId();
-    }
-
-    private GroceryStatus determineStatus(LocalDate expirationDate) {
-
-        LocalDate today = LocalDate.now();
-
-        if (expirationDate.isBefore(today)) {
-            return GroceryStatus.EXPIRED;
-        }
-
-        if (expirationDate.isBefore(today.plusDays(3))) {
-            return GroceryStatus.EXPIRING_SOON;
-        }
-
-        return GroceryStatus.FRESH;
     }
 
     private GroceryItem getUserOwnedGroceryItem(Long id) {
