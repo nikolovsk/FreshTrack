@@ -1,5 +1,6 @@
 package com.freshtrack.backend.entity;
 
+import com.freshtrack.backend.enums.GroceryStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -55,4 +56,18 @@ public class GroceryItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public GroceryStatus getStatus() {
+        LocalDate today = LocalDate.now();
+
+        if (expirationDate.isBefore(today)) {
+            return GroceryStatus.EXPIRED;
+        }
+
+        if (expirationDate.isBefore(today.plusDays(3))) {
+            return GroceryStatus.EXPIRING_SOON;
+        }
+
+        return GroceryStatus.FRESH;
+    }
 }
