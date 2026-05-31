@@ -1,6 +1,5 @@
 package com.freshtrack.backend.entity;
 
-import com.freshtrack.backend.enums.GroceryStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -38,9 +37,8 @@ public class GroceryItem {
     @Column(name = "expiration_date", nullable = false)
     private LocalDate expirationDate;
 
-    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
-    private GroceryStatus status;
+    private boolean consumed;
 
     @Column(name = "created_at")
     @CreationTimestamp

@@ -1,0 +1,1 @@
+ALTER TABLE grocery_item DROP COLUMN status;

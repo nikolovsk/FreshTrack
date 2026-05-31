@@ -1,0 +1,2 @@
+ALTER TABLE grocery_item
+    ADD COLUMN consumed BOOLEAN NOT NULL DEFAULT FALSE;

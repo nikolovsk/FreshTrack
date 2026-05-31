@@ -24,8 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.freshtrack.backend.util.GroceryStatusUtil.determineStatus;
-
 @Service
 @RequiredArgsConstructor
 public class GroceryItemServiceImpl implements GroceryItemService {
@@ -49,7 +47,6 @@ public class GroceryItemServiceImpl implements GroceryItemService {
                 .price(request.price())
                 .purchaseDate(request.purchaseDate())
                 .expirationDate(request.expirationDate())
-                .status(determineStatus(request.expirationDate()))
                 .category(category)
                 .user(User.builder().id(userId).build())
                 .build();
@@ -103,7 +100,6 @@ public class GroceryItemServiceImpl implements GroceryItemService {
         item.setPurchaseDate(request.purchaseDate());
         item.setExpirationDate(request.expirationDate());
         item.setCategory(category);
-        item.setStatus(determineStatus(request.expirationDate()));
 
         GroceryItem updated = groceryItemRepository.save(item);
 
