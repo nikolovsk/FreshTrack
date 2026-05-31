@@ -37,14 +37,12 @@ public class GroceryItemSpecification {
         };
     }
 
-    public static Specification<GroceryItem> hasStatus(GroceryStatus status) {
+    public static Specification<GroceryItem> hasStatus(GroceryStatus status, LocalDate today) {
         return (root, query, criteriaBuilder) ->
         {
             if (status == null) {
                 return criteriaBuilder.conjunction();
             }
-
-            LocalDate today = LocalDate.now();
 
             Expression<LocalDate> expirationDate = root.get("expirationDate");
 

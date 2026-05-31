@@ -22,6 +22,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -32,6 +34,7 @@ public class GroceryItemServiceImpl implements GroceryItemService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final GroceryItemMapper mapper;
+    private final Clock clock;
 
     @Override
     public GroceryItemResponse createGroceryItem(GroceryItemRequest request) {
@@ -61,6 +64,8 @@ public class GroceryItemServiceImpl implements GroceryItemService {
 
         Long userId = getLoggedInUserId();
 
+        LocalDate today = LocalDate.now(clock);
+
         String search = filter != null ? filter.search() : null;
         Long categoryId = filter != null ? filter.categoryId() : null;
         GroceryStatus status = filter != null ? filter.status() : null;
@@ -69,7 +74,7 @@ public class GroceryItemServiceImpl implements GroceryItemService {
                 .where(GroceryItemSpecification.hasUserId(userId))
                 .and(GroceryItemSpecification.nameContains(search))
                 .and(GroceryItemSpecification.hasCategory(categoryId))
-                .and(GroceryItemSpecification.hasStatus(status));
+                .and(GroceryItemSpecification.hasStatus(status, today));
 
         return groceryItemRepository
                 .findAll(specification, Sort.by(Sort.Direction.ASC, "expirationDate"))
