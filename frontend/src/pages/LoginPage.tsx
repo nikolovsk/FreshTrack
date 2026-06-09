@@ -6,13 +6,14 @@ import AuthInput from "../components/auth/AuthInput";
 import AuthButton from "../components/auth/AuthButton";
 
 import { login } from "../services/authService";
-import { setToken } from "../utils/token";
 import { Link, useNavigate } from "react-router-dom";
 import * as React from "react";
-import {getErrorMessage} from "../utils/apiError.ts";
+import { getErrorMessage } from "../utils/apiError.ts";
+import { useAuth } from "../context/useAuth.ts";
 
 function LoginPage() {
     const navigate = useNavigate();
+    const { loginUser } = useAuth();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -26,7 +27,7 @@ function LoginPage() {
 
         try {
             const res = await login({ email, password });
-            setToken(res.token);
+            loginUser(res.token);
             navigate("/");
         } catch(err: unknown) {
             setError(getErrorMessage(err));
