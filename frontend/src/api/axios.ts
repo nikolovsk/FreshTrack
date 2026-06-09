@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken } from "../utils/token.ts";
+import { getToken, removeToken } from "../utils/token.ts";
 
 const api = axios.create({
     baseURL: "http://localhost:8080",
@@ -15,7 +15,7 @@ api.interceptors.request.use(
         const token = getToken();
 
         const isPublicRoute = PUBLIC_ROUTES.some(route =>
-            (config.url ?? "").includes(route)
+            (config.url ?? "").startsWith(route)
         );
 
         if (token && !isPublicRoute) {
@@ -28,5 +28,20 @@ api.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        const status = error.response?.status;
+
+        if (status === 401) {
+            removeToken();
+
+            window.location.href = "/login";
+        }
+
+        return Promise.reject(error);
+    }
+)
 
 export default api;
