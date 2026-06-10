@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as React from "react";
 import { getErrorMessage } from "../utils/apiError.ts";
 import { useAuth } from "../context/useAuth.ts";
+import { Eye, EyeOff } from "lucide-react";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -19,6 +20,7 @@ function LoginPage() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -62,9 +64,14 @@ function LoginPage() {
 
                         <AuthInput
                             label="Password"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            toggleElement={
+                                <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
+                                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                                </button>
+                            }
                         />
 
                         <div className="auth-support">
