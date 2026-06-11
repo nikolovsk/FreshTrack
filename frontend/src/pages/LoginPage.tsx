@@ -11,6 +11,7 @@ import * as React from "react";
 import { getErrorMessage } from "../utils/apiError.ts";
 import { useAuth } from "../context/useAuth.ts";
 import { Eye, EyeOff } from "lucide-react";
+import GroceriesAnimation from "../components/GroceriesAnimation.tsx";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -42,10 +43,30 @@ function LoginPage() {
         <AuthSplitLayout
             left={
                 <div>
-                    <h1>FreshTrack</h1>
-                    <p>
-                        Track groceries, reduce waste, and manage your inventory smarter.
+                    <div className="auth-brand">
+                        <div className="auth-logo-dot" />
+                        <span>FreshTrack</span>
+                    </div>
+
+                    <h1 className="auth-hero-title">
+                        Know your food.
+                        <br />
+                        Before it goes to waste.
+                    </h1>
+
+                    <p className="auth-hero-text">
+                        Everything in your kitchen, organized in one place.
+                        <br/>
+                        No guessing. No forgotten groceries. No wasted food.
                     </p>
+
+                    <div className="auth-visual-stage">
+                        <GroceriesAnimation />
+                    </div>
+
+                    <div className="auth-tagline">
+                        Trusted by households for smarter food habits.
+                    </div>
                 </div>
             }
             right={
