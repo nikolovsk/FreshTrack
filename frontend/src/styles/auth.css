@@ -229,3 +229,59 @@
     letter-spacing: 1.5px;
     opacity: 0.8;
 }
+
+.success-modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    background: rgba(15, 23, 42, 0.35);
+}
+
+.success-modal {
+    width: 380px;
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    border: 1px solid #dcfce7;
+    animation: successPop 0.15s ease-out;
+}
+
+.success-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #16a34a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.success-modal h3 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.success-modal p {
+    color: #64748b;
+    line-height: 1.5;
+}
+
+@keyframes successPop {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
