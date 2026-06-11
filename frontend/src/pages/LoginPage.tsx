@@ -11,7 +11,7 @@ import * as React from "react";
 import { getErrorMessage } from "../utils/apiError.ts";
 import { useAuth } from "../context/useAuth.ts";
 import { Eye, EyeOff } from "lucide-react";
-import GroceriesAnimation from "../components/GroceriesAnimation.tsx";
+import AuthLeftPanel from "../components/auth/AuthLeftPanel.tsx";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -42,32 +42,11 @@ function LoginPage() {
     return (
         <AuthSplitLayout
             left={
-                <div>
-                    <div className="auth-brand">
-                        <div className="auth-logo-dot" />
-                        <span>FreshTrack</span>
-                    </div>
-
-                    <h1 className="auth-hero-title">
-                        Know your food.
-                        <br />
-                        Before it goes to waste.
-                    </h1>
-
-                    <p className="auth-hero-text">
-                        Everything in your kitchen, organized in one place.
-                        <br/>
-                        No guessing. No forgotten groceries. No wasted food.
-                    </p>
-
-                    <div className="auth-visual-stage">
-                        <GroceriesAnimation />
-                    </div>
-
-                    <div className="auth-tagline">
-                        Trusted by households for smarter food habits.
-                    </div>
-                </div>
+                <AuthLeftPanel
+                    title={"Know your food.\nBefore it goes to waste."}
+                    description={"Everything in your kitchen, organized in one place.\nNo guessing. No forgotten groceries. No wasted food."}
+                    tagline="Trusted by households for smarter food habits."
+                />
             }
             right={
                 <AuthCard

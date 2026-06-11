@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as React from "react";
 import { getErrorMessage } from "../utils/apiError.ts";
 import { Eye, EyeOff, LucideCheckCircle } from "lucide-react";
-import GroceriesAnimation from "../components/GroceriesAnimation.tsx";
+import AuthLeftPanel from "../components/auth/AuthLeftPanel.tsx";
 
 function RegisterPage() {
     const navigate = useNavigate();
@@ -56,32 +56,11 @@ function RegisterPage() {
         <>
             <AuthSplitLayout
                 left={
-                    <div>
-                        <div className="auth-brand">
-                            <div className="auth-logo-dot" />
-                            <span>FreshTrack</span>
-                        </div>
-
-                        <h1 className="auth-hero-title">
-                            Start tracking your food.
-                            <br />
-                            Before it goes to waste.
-                        </h1>
-
-                        <p className="auth-hero-text">
-                            Create your account and bring clarity to your kitchen.
-                            <br />
-                            Track groceries, reduce waste, and build smarter habits.
-                        </p>
-
-                        <div className="auth-visual-stage">
-                            <GroceriesAnimation />
-                        </div>
-
-                        <div className="auth-tagline">
-                            A smarter kitchen starts here.
-                        </div>
-                    </div>
+                    <AuthLeftPanel
+                        title={"Start tracking your food.\nBefore it goes to waste."}
+                        description={"Create your account and bring clarity to your kitchen.\nTrack groceries, reduce waste, and build smarter habits."}
+                        tagline="A smarter kitchen starts here."
+                    />
                 }
                 right={
                     <AuthCard

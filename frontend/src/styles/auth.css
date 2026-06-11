@@ -204,12 +204,14 @@
 .auth-hero-title {
     font-size: 45px;
     font-weight: 800;
+    white-space: pre-line;
 }
 
 .auth-hero-text {
     font-size: 16px;
     line-height: 1.5;
     margin-top: 32px;
+    white-space: pre-line;
 }
 
 .auth-visual-stage {
