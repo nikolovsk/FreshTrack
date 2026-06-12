@@ -1,4 +1,3 @@
-import "../../styles/auth.css";
 import * as React from "react";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {

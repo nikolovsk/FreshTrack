@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import "../../styles/auth.css";
 
 interface Props {
     left: ReactNode;
