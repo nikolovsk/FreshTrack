@@ -7,6 +7,7 @@ import { AuthProvider } from "./context/AuthProvider.tsx";
 import "./styles/variables.css";
 import "./styles/auth.css";
 import "./styles/layout.css";
+import "./styles/home.css";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

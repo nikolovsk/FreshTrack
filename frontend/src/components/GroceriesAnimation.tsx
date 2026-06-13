@@ -1,8 +1,13 @@
 import { useEffect, useRef } from "react";
 import lottie from "lottie-web";
-import groceriesAnimation from "../assets/groceries.json";
 
-export default function GroceriesAnimation({ className }: { className?: string }) {
+interface Props {
+    animationData: object;
+    className?: string;
+    speed?: number;
+}
+
+function GroceriesAnimation({ animationData, className, speed=1 }: Props) {
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -13,11 +18,15 @@ export default function GroceriesAnimation({ className }: { className?: string }
             renderer: "svg",
             loop: true,
             autoplay: true,
-            animationData: groceriesAnimation,
+            animationData,
         });
 
+        anim.setSpeed(speed);
+
         return () => anim.destroy();
-    }, []);
+    }, [animationData, speed]);
 
     return <div ref={ref} className={className} />;
 }
+
+export default GroceriesAnimation;

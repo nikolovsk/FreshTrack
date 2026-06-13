@@ -1,4 +1,5 @@
 import GroceriesAnimation from "../GroceriesAnimation.tsx";
+import groceriesAnimation from "../../assets/groceries.json";
 
 interface Props {
     title: string;
@@ -23,7 +24,7 @@ function AuthLeftPanel({ title, description, tagline}: Props) {
             </p>
 
             <div className="auth-visual-stage">
-                <GroceriesAnimation />
+                <GroceriesAnimation animationData={groceriesAnimation} speed={0.7} />
             </div>
 
             <div className="auth-tagline">

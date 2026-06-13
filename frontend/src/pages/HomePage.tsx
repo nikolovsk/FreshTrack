@@ -1,3 +1,15 @@
-export default function HomePage() {
-    return <h1>Home Page</h1>;
+import HeroSection from "../components/home/HeroSection.tsx";
+
+function HomePage() {
+    return (
+        <div className="home-page">
+
+            <HeroSection />
+
+            <hr />
+
+        </div>
+    );
 }
+
+export default HomePage;

@@ -215,7 +215,7 @@
 }
 
 .auth-visual-stage {
-    margin: -80px;
+    margin: -70px;
     width: 550px;
     height: 550px;
     display: flex;
@@ -224,8 +224,6 @@
 }
 
 .auth-tagline {
-    margin-top: 20px;
-    margin-bottom: -30px;
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
