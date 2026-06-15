@@ -33,7 +33,7 @@ function HeroSection() {
                 </div>
             </div>
 
-            <div>
+            <div className="home-hero-visual-wrapper">
                 <GroceriesAnimation className="hero-visual" animationData={groceriesAnimation} speed={0.7} />
             </div>
 
