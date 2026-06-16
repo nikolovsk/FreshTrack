@@ -183,3 +183,122 @@
     color: var(--text-secondary);
     font-size: 20px;
 }
+
+.home-mission {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.mission-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+    padding: 0 30px;
+}
+
+.mission-top {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 100px;
+    align-items: center;
+}
+
+.mission-label {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 1.7px;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 44px;
+}
+
+.mission-content h2 {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 28px;
+}
+
+.mission-content p {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 500px;
+}
+
+.mission-impact {
+    padding: 28px;
+    border-radius: 20px;
+    background: linear-gradient(
+            135deg,
+            var(--primary-light),
+            rgba(22, 163, 74, 0.05)
+    );
+    border: 1px solid rgba(22, 163, 74, 0.15);
+    text-align: center;
+    margin-top: 60px;
+}
+
+.impact-number {
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 12px;
+}
+
+.impact-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.mission-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.mission-story {
+    padding: 50px 60px;
+    border-radius: 18px;
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.mission-story:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.2);
+}
+
+.story-tag {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+}
+
+.mission-story.problem .story-tag {
+    color: var(--text-problem);
+}
+
+.mission-story.solution .story-tag {
+    color: var(--primary);
+}
+
+.mission-story h3 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 14px;
+}
+
+.mission-story p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}

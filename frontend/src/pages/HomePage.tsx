@@ -1,5 +1,6 @@
 import HeroSection from "../components/home/HeroSection.tsx";
 import FeatureSection from "../components/home/FeatureSection.tsx";
+import MissionSection from "../components/home/MissionSection.tsx";
 
 function HomePage() {
     return (
@@ -22,6 +23,9 @@ function HomePage() {
 
             <hr/>
 
+            <MissionSection />
+
+            <hr />
         </div>
     );
 }
