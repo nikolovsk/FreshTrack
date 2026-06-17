@@ -21,6 +21,10 @@ function MissionSection() {
                     </div>
 
                     <div className="mission-impact">
+                        <div className="floating-food food-1">🥦</div>
+                        <div className="floating-food food-2">🍎</div>
+                        <div className="floating-food food-3">🥕</div>
+
                         <div className="impact-number">30%</div>
                         <div className="impact-text">
                             of all food produced globally is wasted every year

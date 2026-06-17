@@ -228,6 +228,8 @@
 }
 
 .mission-impact {
+    position: relative;
+    overflow: hidden;
     padding: 28px;
     border-radius: 20px;
     background: linear-gradient(
@@ -242,15 +244,56 @@
 
 .impact-number {
     font-size: 44px;
-    font-weight: 800;
+    font-weight: 900;
     color: var(--primary);
     margin-bottom: 12px;
 }
 
 .impact-text {
     font-size: 16px;
+    font-weight: 700;
     line-height: 1.6;
-    color: var(--text-secondary);
+    color: var(--text-primary);
+}
+
+.floating-food {
+    position: absolute;
+    font-size: 48px;
+    opacity: 0.3;
+    filter: blur(0.8px);
+}
+
+.food-1 {
+    top: 15px;
+    left: 20px;
+    animation: drift1 6s ease-in-out infinite;
+}
+
+.food-2 {
+    top: 25px;
+    right: 25px;
+    animation: drift2 7s ease-in-out infinite;
+}
+
+.food-3 {
+    bottom: 5px;
+    left: 50%;
+    animation: drift3 8s ease-in-out infinite;
+}
+
+@keyframes drift1 {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(8deg); }
+}
+
+@keyframes drift2 {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(8px) rotate(-8deg); }
+}
+
+@keyframes drift3 {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-12px); }
 }
 
 .mission-bottom {
@@ -301,4 +344,126 @@
     font-size: 16px;
     line-height: 1.8;
     color: var(--text-secondary);
+}
+
+.home-how-it-works {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 30px 50px 30px;
+}
+
+.how-header {
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.how-header h2 {
+    font-size: 38px;
+    font-weight: 800;
+    margin-bottom: 16px;
+}
+
+.how-header p {
+    color: var(--text-secondary);
+    font-size: 18px;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.how-timeline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 60px;
+    position: relative;
+    margin-top: 60px;
+}
+
+.how-timeline::before {
+    content: "";
+    position: absolute;
+    top: 70px;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    background: linear-gradient(
+            90deg,
+            var(--primary),
+            var(--secondary),
+            var(--primary)
+    );
+    background-size: 200% 100%;
+    animation: flowLine 5s linear infinite;
+    border-radius: 999px;
+    z-index: 1;
+}
+
+@keyframes flowLine {
+    0% { background-position: 0 0; }
+    100% { background-position: 200% 0; }
+}
+
+.how-step {
+    flex: 1;
+    position: relative;
+    z-index: 2;
+    padding: 40px 28px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    text-align: center;
+    transition: all 0.35s ease;
+}
+
+.how-step:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 30px 65px rgba(0,0,0,0.2);
+}
+
+.step-marker {
+    position: relative;
+    margin-bottom: 32px;
+}
+
+.step-circle {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 18px;
+    box-shadow: 0 0 0 6px rgba(22,163,74,0.15);
+    transition: all 0.3s ease;
+}
+
+.step-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    border-radius: 50%;
+    margin: 20px auto 0;
+    opacity: 0.6;
+}
+
+.how-step:hover .step-circle {
+    transform: scale(1.12);
+    box-shadow: 0 0 0 10px rgba(22,163,74,0.2);
+}
+
+.step-content h3 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.step-content p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
 }
