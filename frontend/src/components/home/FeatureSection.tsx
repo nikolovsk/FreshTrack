@@ -3,7 +3,7 @@ import FeatureCard from "./FeatureCard.tsx";
 
 function FeatureSection() {
     return (
-        <section className="home-features">
+        <section id="features" className="home-features">
 
             <FeatureCard
                 title="Manage Your Inventory"

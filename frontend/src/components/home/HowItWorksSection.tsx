@@ -1,6 +1,6 @@
 function HowItWorksSection() {
     return (
-        <section className="home-how-it-works">
+        <section id="how-it-works" className="home-how-it-works">
 
             <div className="how-header">
                 <h2>How FreshTrack works</h2>

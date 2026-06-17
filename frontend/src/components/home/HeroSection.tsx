@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 
 function HeroSection() {
     return (
-        <section className="home-hero">
+        <section id="home" className="home-hero">
 
             <div className="text-section">
                 <div className="home-hero-text">

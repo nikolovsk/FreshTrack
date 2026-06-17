@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/navbar/Navbar.tsx";
+import Footer from "../components/footer/Footer.tsx";
 
 function AppLayout() {
     return (
@@ -9,6 +10,8 @@ function AppLayout() {
             <main className="app-content">
                 <Outlet />
             </main>
+
+            <Footer />
         </div>
     );
 }

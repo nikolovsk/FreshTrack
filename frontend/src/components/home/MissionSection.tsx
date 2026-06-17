@@ -1,6 +1,6 @@
 function MissionSection() {
     return (
-        <section className="home-mission">
+        <section id="mission" className="home-mission">
 
             <div className="mission-wrapper">
                 <div className="mission-top">
