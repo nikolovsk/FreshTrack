@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/useAuth";
+import { useAuth } from "../../../context/useAuth.ts";
 
 import { LogOut } from "lucide-react";
 import Logo from "./Logo.tsx";

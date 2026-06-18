@@ -22,7 +22,7 @@ function Footer() {
                 <div className="footer-links">
                     <div className="footer-column">
                         <h4>App</h4>
-                        <a href="/groceries">Inventory</a>
+                        <a href="/groceries">Groceries</a>
                         <a href="/recipes">Recipes</a>
                         <a href="/dashboard">Dashboard</a>
                     </div>
