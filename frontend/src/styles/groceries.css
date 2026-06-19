@@ -1,0 +1,76 @@
+.groceries-page {
+    padding: 24px;
+}
+
+.inventory-header {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+    border-radius: 20px;
+    background:
+            radial-gradient(
+                    circle at top right,
+                    rgba(34, 197, 94, 0.15),
+                    transparent 45%
+            ),
+            linear-gradient(
+                    135deg,
+                    #f8fffa 0%,
+                    #ecfdf5 100%
+            );
+    border: 1px solid #d1fae5;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.inventory-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inventory-header-text {
+    flex: 1;
+}
+
+.inventory-header-tag {
+    display: inline-block;
+    padding: 8px 16px;
+    margin-bottom: 40px;
+    border-radius: 20px;
+    background-color: var(--primary-light);
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.inventory-header h1 {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 48px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.inventory-header p {
+    font-size: 17px;
+    line-height: 28px;
+    color: var(--text-secondary);
+}
+
+.inventory-header-animation {
+    width: 360px;
+    height: 360px;
+    margin: -70px 0 -20px 0;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}
+
+.inventory-header-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 28px;
+    font-size: 15px;
+    color: var(--primary);
+}
