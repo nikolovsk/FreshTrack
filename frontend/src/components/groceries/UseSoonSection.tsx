@@ -1,4 +1,5 @@
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, ArrowRight } from "lucide-react";
+import {Link} from "react-router-dom";
 
 export default function UseSoonSection() {
     const items = [
@@ -32,24 +33,29 @@ export default function UseSoonSection() {
         <div className="use-soon">
             <div className="use-soon-header">
                 <div className="use-soon-title">
-                    <AlertTriangle size={18} />
+                    <AlertTriangle size={20} />
                     <h2>Use Soon</h2>
                 </div>
 
-                <p>
-                    {items.length} ingredients need attention
-                </p>
+                <div className="use-soon-title-row">
+                    <span className="use-soon-count">
+                        {items.length}
+                    </span>
+                    <p>
+                        items need attention
+                    </p>
+                </div>
             </div>
 
             <div className="use-soon-list">
                 {items.map((item) => (
-                    <div
-                        key={item.id}
-                        className={`use-soon-item ${getUrgencyClass(item.daysLeft)}`}
-                    >
+                    <div key={item.id} className={`use-soon-item ${getUrgencyClass(item.daysLeft)}`} >
                         <div>
                             <h4>{item.name}</h4>
-                            <span>{item.category}</span>
+
+                            <div className="use-soon-category">
+                                {item.category}
+                            </div>
                         </div>
 
                         <div className="use-soon-days">
@@ -59,9 +65,10 @@ export default function UseSoonSection() {
                 ))}
             </div>
 
-            <button className="use-soon-btn">
+            <Link to="/recipes" className="use-soon-btn">
                 Find Recipes
-            </button>
+                <ArrowRight size={16} />
+            </Link>
         </div>
     );
 }
