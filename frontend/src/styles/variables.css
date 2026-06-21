@@ -9,7 +9,11 @@
 
     --text-primary: #000000;
     --text-secondary: #64748b;
-    --text-problem: #ef4444;
+
+    --danger: #ef4444;
 
     --border-color: #e2e8f0;
+
+    --status-total: #64748b;
+    --status-soon: #f59e0b;
 }

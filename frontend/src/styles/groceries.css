@@ -1,10 +1,13 @@
 .groceries-page {
+    display: flex;
     padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-direction: column;
+    gap: 100px;
 }
 
 .inventory-header {
-    max-width: 1200px;
-    margin: 0 auto;
     padding: 0 32px;
     border-radius: 20px;
     background:
@@ -73,4 +76,202 @@
     margin-top: 28px;
     font-size: 15px;
     color: var(--primary);
+}
+
+.inventory-overview {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 28px;
+}
+
+.inventory-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding-right: 80px;
+}
+
+.stat-card {
+    --accent: var(--border-color);
+    --icon-bg: var(--border-color);
+    --icon-color: var(--text-secondary);
+
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--accent);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.stat-value {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.stat-description {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.stat-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-secondary);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.stat-card-header svg {
+    padding: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+
+    background: var(--icon-bg);
+    color: var(--icon-color);
+}
+
+.stat-card.total {
+    --accent: var(--status-total);
+    --icon-bg: var(--border-color);
+    --icon-color: var(--status-total);
+}
+
+.stat-card.fresh {
+    --accent: var(--primary);
+    --icon-bg: var(--primary-light);
+    --icon-color: var(--primary);
+}
+
+.stat-card.soon {
+    --accent: var(--status-soon);
+    --icon-bg: #fef3c7;
+    --icon-color: var(--status-soon);
+}
+
+.stat-card.expired {
+    --accent: var(--danger);
+    --icon-bg: #fee2e2;
+    --icon-color: var(--danger);
+}
+
+.use-soon {
+    background: linear-gradient(
+            135deg,
+            #fff7ed 0%,
+            #fffbeb 100%
+    );
+
+    border: 1px solid #fed7aa;
+
+    border-radius: 20px;
+
+    padding: 24px;
+}
+
+.use-soon-header {
+    margin-bottom: 16px;
+}
+
+.use-soon-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.use-soon-header p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.use-soon-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.use-soon-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 16px;
+    border-radius: 14px;
+
+    border: 1px solid var(--border-color);
+
+    transition: all 0.2s ease;
+}
+
+.use-soon-item:hover {
+    transform: translateY(-2px);
+}
+
+.use-soon-item h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+
+    margin-bottom: 4px;
+}
+
+.use-soon-item span {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.use-soon-days {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.use-soon-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.use-soon-meta {
+    font-size: 13px;
+    color: var(--danger);
+    font-weight: 600;
+}
+
+.use-soon-btn {
+    margin-top: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 12px 20px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: var(--primary);
+    color: white;
+
+    font-weight: 600;
+}
+
+.use-soon-btn:hover {
+    background: var(--primary-hover);
 }
