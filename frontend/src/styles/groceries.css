@@ -166,6 +166,22 @@
     --icon-color: var(--danger);
 }
 
+.stats-header {
+    margin-bottom: 16px;
+}
+
+.stats-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stats-header p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin: 8px 0 20px 0;
+}
+
 .use-soon {
     background: linear-gradient(
             135deg,
