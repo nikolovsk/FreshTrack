@@ -218,7 +218,7 @@
     margin: 8px 0;
     gap: 6px;
     color: var(--status-soon);
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .use-soon-count {
@@ -229,6 +229,9 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-bottom: 20px;
+    max-height: 350px;
+    overflow-y: auto;
 }
 
 .use-soon-item {
@@ -274,8 +277,9 @@
     border-radius: 16px;
     background: var(--background);
     border: 1px solid var(--border-color);
+    color: var(--text-secondary);
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .use-soon-days {
@@ -314,4 +318,30 @@
 
 .use-soon-btn:hover {
     background: var(--primary-hover);
+}
+
+.use-soon-btn.disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.use-soon-empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.use-soon-empty p {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.use-soon-empty span {
+    font-size: 14px;
+    color: var(--text-secondary);
 }

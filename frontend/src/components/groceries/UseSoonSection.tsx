@@ -1,33 +1,16 @@
 import { AlertTriangle, ArrowRight } from "lucide-react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import type { Grocery } from "../../types/grocery.ts";
+import { getUseSoonItems } from "../../utils/getUseSoonItems.ts";
+import { getUrgencyClass } from "../../utils/groceryUrgency.ts";
 
-export default function UseSoonSection() {
-    const items = [
-        {
-            id: 1,
-            name: "Milk",
-            category: "Dairy",
-            daysLeft: 1,
-        },
-        {
-            id: 2,
-            name: "Spinach",
-            category: "Vegetables",
-            daysLeft: 2,
-        },
-        {
-            id: 3,
-            name: "Eggs",
-            category: "Dairy",
-            daysLeft: 3,
-        },
-    ];
+type Props = {
+    groceries: Grocery[];
+};
 
-    function getUrgencyClass(daysLeft: number) {
-        if (daysLeft <= 1) return "critical";
-        if (daysLeft <= 3) return "warning";
-        return "normal";
-    }
+export default function UseSoonSection({ groceries }: Props) {
+    const items = getUseSoonItems(groceries);
+    const isEmpty = items.length === 0;
 
     return (
         <div className="use-soon">
@@ -48,24 +31,37 @@ export default function UseSoonSection() {
             </div>
 
             <div className="use-soon-list">
-                {items.map((item) => (
-                    <div key={item.id} className={`use-soon-item ${getUrgencyClass(item.daysLeft)}`} >
-                        <div>
-                            <h4>{item.name}</h4>
+                {isEmpty ? (
+                    <div className="use-soon-empty">
+                        <p>You're all caught up</p>
+                        <span>Your groceries are fresh and under control.</span>
+                    </div>
+                ) : (
+                    items.map((item) => (
+                        <div key={item.id} className={`use-soon-item ${getUrgencyClass(item.daysLeft)}`} >
+                            <div>
+                                <h4>{item.name}</h4>
 
-                            <div className="use-soon-category">
-                                {item.category}
+                                <div className="use-soon-category">
+                                    {item.categoryName}
+                                </div>
+                            </div>
+
+                            <div className="use-soon-days">
+                                {item.daysLeft} day{item.daysLeft > 1 ? "s" : ""} left
                             </div>
                         </div>
-
-                        <div className="use-soon-days">
-                            {item.daysLeft} day{item.daysLeft > 1 ? "s" : ""} left
-                        </div>
-                    </div>
-                ))}
+                    ))
+                )}
             </div>
 
-            <Link to="/recipes" className="use-soon-btn">
+            <Link
+                to="/recipes"
+                  className={`use-soon-btn ${isEmpty ? "disabled" : ""}`}
+                  onClick={(e) => {
+                      if (isEmpty) e.preventDefault();
+                  }}
+            >
                 Find Recipes
                 <ArrowRight size={16} />
             </Link>
