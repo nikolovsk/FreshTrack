@@ -1,12 +1,12 @@
 import { Package, Leaf, Clock3, AlertCircle } from "lucide-react";
 import { calculateGroceryStats } from "../../utils/groceryStats.ts";
-import type {Grocery} from "../../types/grocery.ts";
+import type { Grocery } from "../../types/grocery.ts";
 
 type Props = {
     groceries: Grocery[];
 };
 
-export default function InventoryStats({ groceries }: Props) {
+function InventoryStats({ groceries }: Props) {
 
     const statsData = calculateGroceryStats(groceries);
 
@@ -77,3 +77,5 @@ export default function InventoryStats({ groceries }: Props) {
         </div>
     );
 }
+
+export default InventoryStats;

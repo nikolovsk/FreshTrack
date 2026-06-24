@@ -8,7 +8,7 @@ type Props = {
     groceries: Grocery[];
 };
 
-export default function UseSoonSection({ groceries }: Props) {
+function UseSoonSection({ groceries }: Props) {
     const items = getUseSoonItems(groceries);
     const isEmpty = items.length === 0;
 
@@ -68,3 +68,5 @@ export default function UseSoonSection({ groceries }: Props) {
         </div>
     );
 }
+
+export default UseSoonSection;

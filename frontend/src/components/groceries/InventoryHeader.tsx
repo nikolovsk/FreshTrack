@@ -2,7 +2,7 @@ import GroceriesAnimation from "../GroceriesAnimation.tsx";
 import groceriesAnimation from "../../assets/groceriesBasket.json";
 import { Info } from "lucide-react";
 
-export default function InventoryHeader() {
+function InventoryHeader() {
     return (
         <div className="inventory-header">
             <div className="inventory-header-content">
@@ -30,3 +30,5 @@ export default function InventoryHeader() {
         </div>
     );
 }
+
+export default InventoryHeader;
