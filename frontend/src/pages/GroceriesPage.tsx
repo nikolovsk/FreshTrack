@@ -4,6 +4,7 @@ import InventoryStats from "../components/groceries/InventoryStats.tsx";
 import { useGroceries } from "../hooks/useGroceries.ts";
 import { useState } from "react";
 import InventorySearch from "../components/groceries/InventorySearch.tsx";
+import CategorySection from "../components/groceries/CategorySection.tsx";
 
 export default function GroceriesPage() {
     const { groceries } = useGroceries();
@@ -22,6 +23,7 @@ export default function GroceriesPage() {
 
             <InventorySearch value={search} onChange={setSearch} />
 
+            <CategorySection groceries={groceries} />
         </div>
     );
 }

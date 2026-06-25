@@ -368,7 +368,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 12px 14px;
+    padding: 12px 10px;
     border-radius: 12px;
     border: 1px solid var(--border-color);
     background: var(--surface);
@@ -387,4 +387,139 @@
 
 .inventory-search svg {
     color: var(--text-secondary);
+}
+
+.category-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-top: -50px;
+}
+
+.category-card {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+    transition: all 0.25s ease;
+}
+
+.category-card:hover {
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+}
+
+.category-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.category-title h3 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.category-header span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: var(--surface);
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.category-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.category-table thead {
+    background: var(--background);
+}
+
+.category-table th {
+    text-align: left;
+    padding: 16px 24px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.category-table td {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 15px;
+    color: var(--text-primary);
+}
+
+.category-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.category-table tbody tr:nth-child(even) {
+    background: rgba(0,0,0,0.015);
+}
+
+.category-table tbody tr:hover {
+    background: rgba(0,0,0,0.04);
+}
+
+.category-table td:first-child {
+    font-weight: 600;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-badge.fresh {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+
+.status-badge.fresh .status-dot {
+    background: var(--primary);
+}
+
+.status-badge.expiring_soon .status-dot {
+    background: var(--status-soon);
+}
+
+.status-badge.expired .status-dot {
+    background: var(--danger);
+}
+
+.status-badge.expiring_soon {
+    background: #fef3c7;
+    color: var(--status-soon);
+}
+
+.status-badge.expired {
+    background: #fee2e2;
+    color: var(--danger);
 }

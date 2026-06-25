@@ -6,3 +6,11 @@ export function getDaysLeft(expirationDate: string): number {
 
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
 }
+
+export function formatDate(date: string) {
+    return new Date(date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    });
+}
