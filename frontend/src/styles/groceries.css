@@ -537,3 +537,51 @@
     background: #fee2e2;
     color: var(--danger);
 }
+
+.table-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.action-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 20px;
+    background: transparent;
+    cursor: pointer;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+}
+
+.action-btn.edit {
+    color: #2563eb;
+}
+
+.action-btn.edit:hover {
+    background: #dbeafe;
+}
+
+.action-btn.complete {
+    color: var(--primary);
+}
+
+.action-btn.complete:hover {
+    background: var(--primary-light);
+}
+
+.action-btn.delete {
+    color: var(--danger);
+}
+
+.action-btn.delete:hover {
+    background: #fee2e2;
+}

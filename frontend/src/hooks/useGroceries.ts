@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getGroceries } from "../services/groceriesService";
+import { deleteGrocery, getGroceries } from "../services/groceriesService";
 import type { Grocery } from "../types/grocery";
 
 export function useGroceries() {
@@ -13,5 +13,10 @@ export function useGroceries() {
             .finally(() => setLoading(false));
     }, []);
 
-    return { groceries, loading };
+    const removeGrocery = async (id: number) => {
+        await deleteGrocery(id);
+        setGroceries((prevState) => prevState.filter((g) => g.id !== id));
+    }
+
+    return { groceries, loading, removeGrocery };
 }

@@ -4,13 +4,19 @@ import { formatDate } from "../../utils/dateUtils.ts";
 import { formatStatus } from "../../utils/formatStatus.ts";
 import { getCategoryTheme } from "../../utils/categoryTheme.ts";
 import * as React from "react";
+import { Pencil, CheckCircle2, Trash2 } from "lucide-react";
+import { useState } from "react";
+import ConfirmModal from "../ConfirmModal.tsx";
 
 type Props = {
     groceries: Grocery[];
+    onDelete: (id: number) => void;
 };
 
-function CategorySection({ groceries }: Props) {
+function CategorySection({ groceries, onDelete }: Props) {
     const groupedGroceries = groupGroceriesByCategory(groceries);
+
+    const [selectedId, setSelectedId] = useState<number | null>(null);
 
     return (
         <div className="category-sections">
@@ -44,6 +50,7 @@ function CategorySection({ groceries }: Props) {
                                 <th>Purchase Date</th>
                                 <th>Expiration Date</th>
                                 <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
 
@@ -60,6 +67,25 @@ function CategorySection({ groceries }: Props) {
                                                 {formatStatus(item.status)}
                                             </span>
                                     </td>
+                                    <td>
+                                        <div className="table-actions">
+
+                                            <button className="action-btn edit" title="Edit grocery">
+                                                <Pencil size={18} />
+                                            </button>
+
+                                            <button className="action-btn complete" title="Mark as completed">
+                                                <CheckCircle2 size={18} />
+                                            </button>
+
+                                            <button className="action-btn delete"
+                                                    title="Delete grocery"
+                                                    onClick={() => setSelectedId(item.id)} >
+                                                <Trash2 size={18} />
+                                            </button>
+
+                                        </div>
+                                    </td>
                                 </tr>
                             ))}
                             </tbody>
@@ -67,6 +93,20 @@ function CategorySection({ groceries }: Props) {
                     </div>
                 );
             })}
+
+            <ConfirmModal
+                open={selectedId !== null}
+                title="Delete Grocery"
+                message="Are you sure you want to delete this item? This action cannot be undone."
+                confirmText="Delete"
+                onClose={() => setSelectedId(null)}
+                onConfirm={() => {
+                    if (selectedId !== null) {
+                        onDelete(selectedId);
+                        setSelectedId(null);
+                    }
+                }}
+            />
         </div>
     );
 }
