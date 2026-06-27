@@ -21,6 +21,7 @@ export function getCategoryTheme(category: string) {
                 icon: Milk,
                 accent: "#3b82f6",
                 bg: "#dbeafe",
+                tableBg: "#eff6ff",
             };
 
         case "fruits":
@@ -28,6 +29,7 @@ export function getCategoryTheme(category: string) {
                 icon: Apple,
                 accent: "#22c55e",
                 bg: "#dcfce7",
+                tableBg: "#ecfdf5",
             };
 
         case "vegetables":
@@ -35,6 +37,7 @@ export function getCategoryTheme(category: string) {
                 icon: Carrot,
                 accent: "#16a34a",
                 bg: "#dcfce7",
+                tableBg: "#f0fdf4",
             };
 
         case "meat & seafood":
@@ -42,6 +45,7 @@ export function getCategoryTheme(category: string) {
                 icon: Beef,
                 accent: "#ef4444",
                 bg: "#fee2e2",
+                tableBg: "#fef2f2"
             };
 
         case "frozen food":
@@ -49,6 +53,7 @@ export function getCategoryTheme(category: string) {
                 icon: Snowflake,
                 accent: "#0ea5e9",
                 bg: "#e0f2fe",
+                tableBg: "#f0f9ff"
             };
 
         case "bakery":
@@ -56,6 +61,7 @@ export function getCategoryTheme(category: string) {
                 icon: Croissant,
                 accent: "#f59e0b",
                 bg: "#fef3c7",
+                tableBg: "#fffbeb"
             };
 
         case "beverages & coffee":
@@ -63,6 +69,7 @@ export function getCategoryTheme(category: string) {
                 icon: Coffee,
                 accent: "#8b5cf6",
                 bg: "#ede9fe",
+                tableBg: "#f5f3ff"
             };
 
         case "grains & pasta":
@@ -70,6 +77,7 @@ export function getCategoryTheme(category: string) {
                 icon: Wheat,
                 accent: "#eab308",
                 bg: "#fef9c3",
+                tableBg: "#fefce8"
             };
 
         case "snacks":
@@ -77,6 +85,7 @@ export function getCategoryTheme(category: string) {
                 icon: Popcorn,
                 accent: "#f97316",
                 bg: "#ffedd5",
+                tableBg: "#fff7ed"
             };
 
         case "sweets":
@@ -84,6 +93,7 @@ export function getCategoryTheme(category: string) {
                 icon: Lollipop,
                 accent: "#db2777",
                 bg: "#fce7f3",
+                tableBg: "#fdf2f8"
             };
 
         default:
@@ -91,6 +101,7 @@ export function getCategoryTheme(category: string) {
                 icon: Soup,
                 accent: "#6366f1",
                 bg: "#eef2ff",
+                tableBg: "#f8fafc"
             };
     }
 }

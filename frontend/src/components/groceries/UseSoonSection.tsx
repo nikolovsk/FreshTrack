@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import type { Grocery } from "../../types/grocery.ts";
 import { getUseSoonItems } from "../../utils/getUseSoonItems.ts";
 import { getUrgencyClass } from "../../utils/groceryUrgency.ts";
+import { formatDaysLeft } from "../../utils/dateUtils.ts";
 
 type Props = {
     groceries: Grocery[];
@@ -25,7 +26,7 @@ function UseSoonSection({ groceries }: Props) {
                         {items.length}
                     </span>
                     <p>
-                        items need attention
+                        item{items.length > 1 ? "s" : ""} need attention
                     </p>
                 </div>
             </div>
@@ -48,7 +49,7 @@ function UseSoonSection({ groceries }: Props) {
                             </div>
 
                             <div className="use-soon-days">
-                                {item.daysLeft} day{item.daysLeft > 1 ? "s" : ""} left
+                                {formatDaysLeft(item.daysLeft)}
                             </div>
                         </div>
                     ))

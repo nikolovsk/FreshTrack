@@ -14,3 +14,15 @@ export function formatDate(date: string) {
         year: "numeric",
     });
 }
+
+export function formatDaysLeft(daysLeft: number): string {
+    if (daysLeft <= 0) {
+        return "Expires today";
+    }
+
+    if (daysLeft === 1) {
+        return "Expires tomorrow";
+    }
+
+    return `${daysLeft} days left`;
+}
