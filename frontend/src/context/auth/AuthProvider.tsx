@@ -1,9 +1,9 @@
 import { useState } from "react";
 import * as React from "react";
 
-import { AuthContext } from "./AuthContext";
-import { getToken, setToken as saveToken, removeToken } from "../utils/token";
-import { isTokenExpired } from "../utils/jwt";
+import { AuthContext } from "./AuthContext.ts";
+import { getToken, setToken as saveToken, removeToken } from "../../utils/token.ts";
+import { isTokenExpired } from "../../utils/jwt.ts";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 

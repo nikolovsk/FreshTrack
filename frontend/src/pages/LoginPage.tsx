@@ -9,7 +9,7 @@ import { login } from "../services/authService";
 import { Link, useNavigate } from "react-router-dom";
 import * as React from "react";
 import { getErrorMessage } from "../utils/apiError.ts";
-import { useAuth } from "../context/useAuth.ts";
+import { useAuth } from "../hooks/useAuth.ts";
 import { Eye, EyeOff } from "lucide-react";
 import AuthLeftPanel from "../components/auth/AuthLeftPanel.tsx";
 
