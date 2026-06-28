@@ -73,6 +73,7 @@ public class GroceryItemServiceImpl implements GroceryItemService {
 
         Specification<GroceryItem> specification = Specification
                 .where(GroceryItemSpecification.hasUserId(userId))
+                .and(GroceryItemSpecification.hasOutcome(GroceryOutcome.ACTIVE))
                 .and(GroceryItemSpecification.nameContains(search))
                 .and(GroceryItemSpecification.hasCategory(categoryId))
                 .and(GroceryItemSpecification.hasStatus(status, today));

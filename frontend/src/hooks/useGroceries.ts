@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { deleteGrocery, getGroceries } from "../services/groceriesService";
+import { deleteGrocery, getGroceries, updateOutcome } from "../services/groceriesService";
 import type { Grocery, GroceryOutcome } from "../types/grocery";
 
 export function useGroceries() {
@@ -18,14 +18,15 @@ export function useGroceries() {
         setGroceries((prevState) => prevState.filter((g) => g.id !== id));
     };
 
-    const updateGrocery = async (
+    const updateGroceryOutcome = async (
         id: number,
         outcome: GroceryOutcome
     ) => {
-        await updateGrocery(id, outcome);
+        await updateOutcome(id, outcome);
         setGroceries((prevState) =>
-            prevState.map((g) => g.id === id ? {...g, outcome} : g));
+            prevState.filter((g) => g.id !== id)
+        );
     };
 
-    return { groceries, loading, removeGrocery, updateGrocery };
+    return { groceries, loading, removeGrocery, updateGroceryOutcome };
 }

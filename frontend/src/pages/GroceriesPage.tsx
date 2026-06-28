@@ -7,7 +7,7 @@ import InventorySearch from "../components/groceries/InventorySearch.tsx";
 import CategorySection from "../components/groceries/CategorySection.tsx";
 
 export default function GroceriesPage() {
-    const { groceries, removeGrocery, updateGrocery } = useGroceries();
+    const { groceries, removeGrocery, updateGroceryOutcome } = useGroceries();
 
     const [search, setSearch] = useState("");
 
@@ -23,7 +23,7 @@ export default function GroceriesPage() {
 
             <InventorySearch value={search} onChange={setSearch} />
 
-            <CategorySection groceries={groceries} onDelete={removeGrocery} onOutcomeChange={updateGrocery} />
+            <CategorySection groceries={groceries} onDelete={removeGrocery} onOutcomeChange={updateGroceryOutcome} />
         </div>
     );
 }

@@ -1,6 +1,7 @@
 package com.freshtrack.backend.specification;
 
 import com.freshtrack.backend.entity.GroceryItem;
+import com.freshtrack.backend.enums.GroceryOutcome;
 import com.freshtrack.backend.enums.GroceryStatus;
 import jakarta.persistence.criteria.Expression;
 import org.springframework.data.jpa.domain.Specification;
@@ -51,6 +52,17 @@ public class GroceryItemSpecification {
                 case EXPIRING_SOON -> criteriaBuilder.between(expirationDate, today, today.plusDays(2));
                 case FRESH -> criteriaBuilder.greaterThanOrEqualTo(expirationDate, today.plusDays(3));
             };
+        };
+    }
+
+    public static Specification<GroceryItem> hasOutcome(GroceryOutcome outcome) {
+        return (root, query, criteriaBuilder) ->
+        {
+            if (outcome == null) {
+                return criteriaBuilder.conjunction();
+            }
+
+            return criteriaBuilder.equal(root.get("outcome"), outcome);
         };
     }
 }
