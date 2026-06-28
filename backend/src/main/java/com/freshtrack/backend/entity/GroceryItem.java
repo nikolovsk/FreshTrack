@@ -1,5 +1,6 @@
 package com.freshtrack.backend.entity;
 
+import com.freshtrack.backend.enums.GroceryOutcome;
 import com.freshtrack.backend.enums.GroceryStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,8 +39,10 @@ public class GroceryItem {
     @Column(name = "expiration_date", nullable = false)
     private LocalDate expirationDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private boolean consumed;
+    @Builder.Default
+    private GroceryOutcome outcome = GroceryOutcome.ACTIVE;
 
     @Column(name = "created_at")
     @CreationTimestamp

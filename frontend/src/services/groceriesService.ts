@@ -9,3 +9,10 @@ export const getGroceries = async (): Promise<Grocery[]> => {
 export const deleteGrocery = async (id: number): Promise<void> => {
     await api.delete(`/api/groceries/${id}`);
 };
+
+export const updateOutcome = async (
+    id: number,
+    outcome: "ACTIVE" | "CONSUMED" | "WASTED"
+) => {
+    await api.patch(`/api/groceries/${id}/outcome?outcome=${outcome}`);
+}

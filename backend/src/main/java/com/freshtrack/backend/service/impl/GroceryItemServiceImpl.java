@@ -6,6 +6,7 @@ import com.freshtrack.backend.dto.GroceryItemResponse;
 import com.freshtrack.backend.entity.Category;
 import com.freshtrack.backend.entity.GroceryItem;
 import com.freshtrack.backend.entity.User;
+import com.freshtrack.backend.enums.GroceryOutcome;
 import com.freshtrack.backend.enums.GroceryStatus;
 import com.freshtrack.backend.exception.CategoryNotFoundException;
 import com.freshtrack.backend.exception.GroceryItemAccessDeniedException;
@@ -117,6 +118,14 @@ public class GroceryItemServiceImpl implements GroceryItemService {
         GroceryItem item = getUserOwnedGroceryItem(id);
 
         groceryItemRepository.delete(item);
+    }
+
+    @Override
+    public void updateOutcome(Long id, GroceryOutcome outcome) {
+        GroceryItem item = getUserOwnedGroceryItem(id);
+
+        item.setOutcome(outcome);
+        groceryItemRepository.save(item);
     }
 
     private Long getLoggedInUserId() {

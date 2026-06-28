@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { deleteGrocery, getGroceries } from "../services/groceriesService";
-import type { Grocery } from "../types/grocery";
+import type { Grocery, GroceryOutcome } from "../types/grocery";
 
 export function useGroceries() {
     const [groceries, setGroceries] = useState<Grocery[]>([]);
@@ -16,7 +16,16 @@ export function useGroceries() {
     const removeGrocery = async (id: number) => {
         await deleteGrocery(id);
         setGroceries((prevState) => prevState.filter((g) => g.id !== id));
-    }
+    };
 
-    return { groceries, loading, removeGrocery };
+    const updateGrocery = async (
+        id: number,
+        outcome: GroceryOutcome
+    ) => {
+        await updateGrocery(id, outcome);
+        setGroceries((prevState) =>
+            prevState.map((g) => g.id === id ? {...g, outcome} : g));
+    };
+
+    return { groceries, loading, removeGrocery, updateGrocery };
 }

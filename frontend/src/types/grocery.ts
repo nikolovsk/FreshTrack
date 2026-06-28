@@ -1,5 +1,7 @@
 export type GroceryStatus = "FRESH" | "EXPIRING_SOON" | "EXPIRED";
 
+export type GroceryOutcome = "ACTIVE" | "CONSUMED" | "WASTED";
+
 export type Grocery = {
     id: number;
     name: string;

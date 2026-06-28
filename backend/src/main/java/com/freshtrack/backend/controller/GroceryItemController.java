@@ -3,6 +3,7 @@ package com.freshtrack.backend.controller;
 import com.freshtrack.backend.dto.GroceryItemFilter;
 import com.freshtrack.backend.dto.GroceryItemRequest;
 import com.freshtrack.backend.dto.GroceryItemResponse;
+import com.freshtrack.backend.enums.GroceryOutcome;
 import com.freshtrack.backend.service.GroceryItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,13 @@ public class GroceryItemController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteGrocery(@PathVariable Long id) {
         groceryItemService.deleteGroceryItem(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/outcome")
+    public ResponseEntity<Void> updateOutcome(@PathVariable Long id, @RequestParam GroceryOutcome outcome) {
+        groceryItemService.updateOutcome(id, outcome);
 
         return ResponseEntity.noContent().build();
     }

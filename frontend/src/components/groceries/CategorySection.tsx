@@ -1,19 +1,21 @@
-import type { Grocery } from "../../types/grocery";
+import type { Grocery, GroceryOutcome } from "../../types/grocery";
 import { groupGroceriesByCategory } from "../../utils/groupGroceriesByCategory";
 import { formatDate } from "../../utils/dateUtils.ts";
 import { formatStatus } from "../../utils/formatStatus.ts";
 import { getCategoryTheme } from "../../utils/categoryTheme.ts";
 import * as React from "react";
-import { Pencil, CheckCircle2, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import ConfirmModal from "../ConfirmModal.tsx";
+import OutcomeDropdown from "./OutcomeDropdown.tsx";
 
 type Props = {
     groceries: Grocery[];
     onDelete: (id: number) => void;
+    onOutcomeChange: (id: number, outcome: GroceryOutcome) => void;
 };
 
-function CategorySection({ groceries, onDelete }: Props) {
+function CategorySection({ groceries, onDelete, onOutcomeChange }: Props) {
     const groupedGroceries = groupGroceriesByCategory(groceries);
 
     const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -54,35 +56,36 @@ function CategorySection({ groceries, onDelete }: Props) {
                             </tr>
                             </thead>
 
-                            <tbody>
-                            {items.map((item) => (
-                                <tr key={item.id}>
-                                    <td>{item.name}</td>
-                                    <td>{item.quantity}</td>
-                                    <td>{formatDate(item.purchaseDate)}</td>
-                                    <td>{formatDate(item.expirationDate)}</td>
-                                    <td>
-                                            <span className={`status-badge ${item.status.toLowerCase()}`}>
-                                                <span className="status-dot" />
-                                                {formatStatus(item.status)}
-                                            </span>
-                                    </td>
-                                    <td>
-                                        <div className="table-actions">
+                                <tbody>
+                                {items.map((item) => (
+                                    <tr key={item.id}>
+                                        <td>{item.name}</td>
+                                        <td>{item.quantity}</td>
+                                        <td>{formatDate(item.purchaseDate)}</td>
+                                        <td>{formatDate(item.expirationDate)}</td>
+                                        <td>
+                                                <span className={`status-badge ${item.status.toLowerCase()}`}>
+                                                    <span className="status-dot" />
+                                                    {formatStatus(item.status)}
+                                                </span>
+                                        </td>
+                                        <td>
+                                            <div className="table-actions">
 
-                                            <button className="action-btn edit" title="Edit grocery">
-                                                <Pencil size={18} />
-                                            </button>
+                                                <button className="action-btn edit" title="Edit grocery">
+                                                    <Pencil size={18} />
+                                                </button>
 
-                                            <button className="action-btn complete" title="Mark as completed">
-                                                <CheckCircle2 size={18} />
-                                            </button>
+                                                <OutcomeDropdown
+                                                    groceryId={item.id}
+                                                    onOutcomeChange={onOutcomeChange}
+                                                />
 
-                                            <button className="action-btn delete"
-                                                    title="Delete grocery"
-                                                    onClick={() => setSelectedId(item.id)} >
-                                                <Trash2 size={18} />
-                                            </button>
+                                                <button className="action-btn delete"
+                                                        title="Delete grocery"
+                                                        onClick={() => setSelectedId(item.id)} >
+                                                    <Trash2 size={18} />
+                                                </button>
 
                                         </div>
                                     </td>

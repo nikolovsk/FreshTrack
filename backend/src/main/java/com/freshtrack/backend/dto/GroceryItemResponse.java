@@ -1,5 +1,6 @@
 package com.freshtrack.backend.dto;
 
+import com.freshtrack.backend.enums.GroceryOutcome;
 import com.freshtrack.backend.enums.GroceryStatus;
 
 import java.math.BigDecimal;
@@ -19,6 +20,8 @@ public record GroceryItemResponse(
         LocalDate expirationDate,
 
         GroceryStatus status,
+
+        GroceryOutcome outcome,
 
         Long categoryId,
 

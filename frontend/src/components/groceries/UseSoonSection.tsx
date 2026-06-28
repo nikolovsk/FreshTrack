@@ -26,7 +26,7 @@ function UseSoonSection({ groceries }: Props) {
                         {items.length}
                     </span>
                     <p>
-                        item{items.length > 1 ? "s" : ""} need attention
+                        item{items.length === 1 ? "" : "s"} need attention
                     </p>
                 </div>
             </div>
