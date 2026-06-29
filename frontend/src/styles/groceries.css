@@ -644,3 +644,8 @@
 .menu-item.wasted {
     color: var(--danger);
 }
+
+.highlight {
+    background: #fef08a;
+    border-radius: 4px;
+}

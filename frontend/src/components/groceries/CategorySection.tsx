@@ -9,6 +9,7 @@ import { useState } from "react";
 import ConfirmModal from "../ConfirmModal.tsx";
 import OutcomeDropdown from "./OutcomeDropdown.tsx";
 import EmptyState from "../EmptyState.tsx";
+import { HighlightText } from "../HighlightText.tsx";
 
 type Props = {
     groceries: Grocery[];
@@ -85,7 +86,9 @@ function CategorySection({ groceries, search, onDelete, onOutcomeChange }: Props
                                 <tbody>
                                 {items.map((item) => (
                                     <tr key={item.id}>
-                                        <td>{item.name}</td>
+                                        <td>
+                                            <HighlightText text={item.name} query={search} />
+                                        </td>
                                         <td>{item.quantity}</td>
                                         <td>{formatDate(item.purchaseDate)}</td>
                                         <td>{formatDate(item.expirationDate)}</td>
