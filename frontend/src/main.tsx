@@ -10,6 +10,7 @@ import "./styles/layout.css";
 import "./styles/home.css";
 import "./styles/groceries.css";
 import "./styles/toast.css"
+import "./styles/emptyState.css"
 import { ToastProvider } from "./context/toast/ToastProvider.tsx";
 
 createRoot(document.getElementById('root')!).render(

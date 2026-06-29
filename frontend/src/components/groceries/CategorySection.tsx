@@ -8,6 +8,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import ConfirmModal from "../ConfirmModal.tsx";
 import OutcomeDropdown from "./OutcomeDropdown.tsx";
+import EmptyState from "../EmptyState.tsx";
 
 type Props = {
     groceries: Grocery[];
@@ -17,8 +18,19 @@ type Props = {
 
 function CategorySection({ groceries, onDelete, onOutcomeChange }: Props) {
     const groupedGroceries = groupGroceriesByCategory(groceries);
+    const hasAnyItems = groceries.length > 0;
 
     const [selectedId, setSelectedId] = useState<number | null>(null);
+
+    if (!hasAnyItems) {
+        return (
+            <EmptyState
+                title="Your inventory is empty"
+                description="Start by adding your first grocery item.
+                Once you do, it will automatically appear grouped by category."
+            />
+        );
+    }
 
     return (
         <div className="category-sections">
