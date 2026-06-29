@@ -12,22 +12,36 @@ import EmptyState from "../EmptyState.tsx";
 
 type Props = {
     groceries: Grocery[];
+    search?: string;
     onDelete: (id: number) => void;
     onOutcomeChange: (id: number, outcome: GroceryOutcome) => void;
 };
 
-function CategorySection({ groceries, onDelete, onOutcomeChange }: Props) {
+function CategorySection({ groceries, search, onDelete, onOutcomeChange }: Props) {
     const groupedGroceries = groupGroceriesByCategory(groceries);
-    const hasAnyItems = groceries.length > 0;
+
+    const hasAnyGroceries = groceries.length > 0;
+
+    const hasVisibleItems = Object.values(groupedGroceries)
+        .some(group => group.length > 0);
 
     const [selectedId, setSelectedId] = useState<number | null>(null);
 
-    if (!hasAnyItems) {
+    if (!hasAnyGroceries && search === "") {
         return (
             <EmptyState
                 title="Your inventory is empty"
                 description="Start by adding your first grocery item.
                 Once you do, it will automatically appear grouped by category."
+            />
+        );
+    }
+
+    if (!hasVisibleItems) {
+        return (
+            <EmptyState
+                title="No groceries match your search"
+                description="Try a different keyword or clear your search to see all items."
             />
         );
     }

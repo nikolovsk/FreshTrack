@@ -3,17 +3,17 @@ import { deleteGrocery, getGroceries, updateOutcome } from "../services/grocerie
 import type { Grocery, GroceryOutcome } from "../types/grocery";
 import { useToast } from "./useToast";
 
-export function useGroceries() {
+export function useGroceries(search: string) {
     const [groceries, setGroceries] = useState<Grocery[]>([]);
     const [loading, setLoading] = useState(true);
     const { showToast } = useToast();
 
     useEffect(() => {
-        getGroceries()
+        getGroceries(search)
             .then((data) => setGroceries(data))
             .catch(console.error)
             .finally(() => setLoading(false));
-    }, []);
+    }, [search]);
 
     const removeGrocery = async (id: number) => {
         await deleteGrocery(id);
