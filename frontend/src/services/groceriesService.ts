@@ -2,11 +2,13 @@ import api from "../api/axios.ts";
 import type { Grocery } from "../types/grocery.ts";
 
 export const getGroceries = async (
-    search?: string
+    search?: string,
+    categoryId?: number
 ): Promise<Grocery[]> => {
     const response = await api.get<Grocery[]>("/api/groceries", {
         params: {
             search: search || undefined,
+            categoryId: categoryId || undefined,
         },
     });
 

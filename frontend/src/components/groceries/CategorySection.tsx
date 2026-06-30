@@ -14,21 +14,22 @@ import { HighlightText } from "../HighlightText.tsx";
 type Props = {
     groceries: Grocery[];
     search?: string;
+    selectedCategory?: number;
     onDelete: (id: number) => void;
     onOutcomeChange: (id: number, outcome: GroceryOutcome) => void;
 };
 
-function CategorySection({ groceries, search, onDelete, onOutcomeChange }: Props) {
+function CategorySection({ groceries, search, selectedCategory, onDelete, onOutcomeChange }: Props) {
     const groupedGroceries = groupGroceriesByCategory(groceries);
 
-    const hasAnyGroceries = groceries.length > 0;
-
-    const hasVisibleItems = Object.values(groupedGroceries)
-        .some(group => group.length > 0);
+    const hasActiveFilters = Boolean(search?.trim() || selectedCategory);
+    const isEmptyResult = groceries.length === 0;
+    const showEmptyInventory = isEmptyResult && !hasActiveFilters;
+    const showNoResults = isEmptyResult && hasActiveFilters;
 
     const [selectedId, setSelectedId] = useState<number | null>(null);
 
-    if (!hasAnyGroceries && search === "") {
+    if (showEmptyInventory) {
         return (
             <EmptyState
                 title="Your inventory is empty"
@@ -38,7 +39,7 @@ function CategorySection({ groceries, search, onDelete, onOutcomeChange }: Props
         );
     }
 
-    if (!hasVisibleItems) {
+    if (showNoResults) {
         return (
             <EmptyState
                 title="No groceries match your search"
