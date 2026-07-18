@@ -23,3 +23,12 @@ export type GroceryFormData = {
     expirationDate: string;
     categoryId: number | "";
 }
+
+export type GroceryFormErrors = {
+    name?: string;
+    quantity?: string;
+    price?: string;
+    purchaseDate?: string;
+    expirationDate?: string;
+    categoryId?: string;
+};

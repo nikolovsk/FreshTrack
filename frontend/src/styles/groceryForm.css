@@ -171,3 +171,19 @@
     font-size: 15px;
     font-weight: 600;
 }
+
+.form-error {
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--danger);
+    font-weight: 500;
+}
+
+.input-error {
+    border-color: var(--danger);
+}
+
+.input-error:focus {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}

@@ -1,8 +1,9 @@
 import { X } from "lucide-react";
-import type { Grocery, GroceryFormData } from "../../../types/grocery.ts";
+import type { Grocery, GroceryFormData, GroceryFormErrors } from "../../../types/grocery.ts";
 import type { Category } from "../../../types/category.ts";
 import { useState } from "react";
 import GroceryForm from "./GroceryForm.tsx";
+import { validateGroceryForm } from "../../../utils/validateGroceryForm.ts";
 
 type Props = {
     open: boolean;
@@ -36,19 +37,24 @@ const createInitialFormData = (grocery?: Grocery): GroceryFormData => {
 function GroceryFormModal({ open, onClose, categories, grocery }: Props) {
     const [formData, setFormData] = useState<GroceryFormData>(createInitialFormData(grocery));
     const [mode, setMode] = useState<"manual" | "ai">("manual");
+    const [errors, setErrors] = useState<GroceryFormErrors>({});
+
+    const handleClose = () => {
+        setFormData(createInitialFormData());
+        setErrors({});
+        setMode("manual");
+        onClose();
+    };
 
     if (!open) return null;
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div
-                className="grocery-modal"
-                onClick={(e) => e.stopPropagation()}
-            >
+        <div className="modal-overlay">
+            <div className="grocery-modal">
                 <div className="grocery-modal-header">
                     <h2>{grocery ? "Edit Grocery" : "Add Grocery"}</h2>
 
-                    <button className="btn-close" onClick={onClose}>
+                    <button className="btn-close" onClick={handleClose}>
                         <X size={22} />
                     </button>
                 </div>
@@ -75,6 +81,7 @@ function GroceryFormModal({ open, onClose, categories, grocery }: Props) {
                             formData={formData}
                             setFormData={setFormData}
                             categories={categories}
+                            errors={errors}
                         />
                     ) : (
                         <div className="ai-upload-placeholder">
@@ -84,11 +91,24 @@ function GroceryFormModal({ open, onClose, categories, grocery }: Props) {
                 </div>
 
                 <div className="grocery-modal-footer">
-                    <button className="cancel-btn" onClick={onClose}>
+                    <button className="cancel-btn" onClick={handleClose}>
                         Cancel
                     </button>
 
-                    <button className="save-grocery-btn" onClick={() => {console.log(formData);}}>
+                    <button
+                        className="save-grocery-btn"
+                        onClick={() => {
+                            const validationErrors = validateGroceryForm(formData);
+
+                            setErrors(validationErrors);
+
+                            if (Object.keys(validationErrors).length === 0) {
+                                console.log("Valid form:", formData);
+
+                                // createGrocery(formData)
+                            }
+                        }}
+                    >
                         Save Grocery
                     </button>
                 </div>
