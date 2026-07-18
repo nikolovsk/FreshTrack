@@ -10,6 +10,16 @@ export type Grocery = {
     purchaseDate: string;
     expirationDate: string;
     status: GroceryStatus;
+    outcome: GroceryOutcome;
     categoryId: number;
     categoryName: string;
 };
+
+export type GroceryFormData = {
+    name: string;
+    quantity: number;
+    price: number | "";
+    purchaseDate: string;
+    expirationDate: string;
+    categoryId: number | "";
+}
