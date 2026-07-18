@@ -683,3 +683,41 @@
     background: #fef08a;
     border-radius: 4px;
 }
+
+.inventory-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: -50px 0 -20px 0;
+}
+
+.inventory-total-label {
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.inventory-total-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    padding-left: 8px;
+}
+
+.add-grocery-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    background: var(--primary);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.add-grocery-btn:hover {
+    background: var(--primary-hover);
+}

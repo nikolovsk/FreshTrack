@@ -6,10 +6,13 @@ import { useState } from "react";
 import InventorySearch from "../components/groceries/InventorySearch.tsx";
 import CategorySection from "../components/groceries/CategorySection.tsx";
 import { useCategories } from "../hooks/useCategories.ts";
+import GroceryFormModal from "../components/groceries/GroceryFormModal.tsx";
+import InventoryActions from "../components/groceries/InventoryActions.tsx";
 
 export default function GroceriesPage() {
     const [search, setSearch] = useState("");
     const [selectedCategory, setSelectedCategory] = useState<number | undefined>();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { groceries, removeGrocery, updateGroceryOutcome } = useGroceries(search, selectedCategory);
     const categories = useCategories();
@@ -30,6 +33,16 @@ export default function GroceriesPage() {
                 categories={categories}
                 selectedCategory={selectedCategory}
                 onCategoryChange={setSelectedCategory}
+            />
+
+            <GroceryFormModal
+                open={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
+
+            <InventoryActions
+                totalItems={groceries.length}
+                onAddGrocery={() => setIsModalOpen(true)}
             />
 
             <CategorySection
