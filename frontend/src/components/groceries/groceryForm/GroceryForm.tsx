@@ -19,7 +19,6 @@ function GroceryForm({ formData, setFormData, categories }: Props) {
 
     return (
         <form className="grocery-form">
-
             <div className="form-group">
                 <label>Grocery Name</label>
 
@@ -106,7 +105,6 @@ function GroceryForm({ formData, setFormData, categories }: Props) {
                     ))}
                 </select>
             </div>
-
         </form>
     );
 }

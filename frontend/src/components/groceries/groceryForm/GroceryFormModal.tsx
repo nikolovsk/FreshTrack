@@ -65,7 +65,7 @@ function GroceryFormModal({ open, onClose, categories, grocery }: Props) {
                         className={mode === "ai" ? "active" : ""}
                         onClick={() => setMode("ai")}
                     >
-                        AI Upload
+                        Photo Upload
                     </button>
                 </div>
 
@@ -84,19 +84,11 @@ function GroceryFormModal({ open, onClose, categories, grocery }: Props) {
                 </div>
 
                 <div className="grocery-modal-footer">
-                    <button
-                        className="cancel-btn"
-                        onClick={onClose}
-                    >
+                    <button className="cancel-btn" onClick={onClose}>
                         Cancel
                     </button>
 
-                    <button
-                        className="save-grocery-btn"
-                        onClick={() => {
-                            console.log(formData);
-                        }}
-                    >
+                    <button className="save-grocery-btn" onClick={() => {console.log(formData);}}>
                         Save Grocery
                     </button>
                 </div>

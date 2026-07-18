@@ -1,5 +1,3 @@
-import { Plus } from "lucide-react";
-
 type Props = {
     totalItems: number;
     onAddGrocery: () => void;
@@ -14,7 +12,6 @@ function InventoryActions({ totalItems, onAddGrocery }: Props) {
             </div>
 
             <button className="add-grocery-btn" onClick={onAddGrocery}>
-                <Plus size={18} />
                 Add Grocery Item
             </button>
         </div>
