@@ -7,15 +7,28 @@ type Props = {
     setFormData: React.Dispatch<React.SetStateAction<GroceryFormData>>;
     categories: Category[];
     errors: GroceryFormErrors;
+    setErrors: React.Dispatch<React.SetStateAction<GroceryFormErrors>>;
 };
 
-function GroceryForm({ formData, setFormData, categories, errors }: Props) {
+function GroceryForm({ formData, setFormData, categories, errors, setErrors }: Props) {
 
-    const handleChange = (field: keyof GroceryFormData, value: string | number) => {
+    const handleChange = (
+        field: keyof GroceryFormData,
+        value: string | number
+    ) => {
         setFormData((prev) => ({
             ...prev,
             [field]: value,
         }));
+
+        setErrors((prev) => {
+            if (!prev[field]) return prev;
+
+            const next = { ...prev };
+            delete next[field];
+
+            return next;
+        });
     };
 
     return (

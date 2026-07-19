@@ -4,6 +4,7 @@ import type { Category } from "../../../types/category.ts";
 import { useState } from "react";
 import GroceryForm from "./GroceryForm.tsx";
 import { validateGroceryForm } from "../../../utils/validateGroceryForm.ts";
+import * as React from "react";
 
 type Props = {
     open: boolean;
@@ -11,39 +12,17 @@ type Props = {
     onSave: (data: GroceryFormData) => Promise<void>;
     categories: Category[];
     grocery?: Grocery;
+    formData: GroceryFormData;
+    setFormData: React.Dispatch<React.SetStateAction<GroceryFormData>>;
 };
 
-const createInitialFormData = (grocery?: Grocery): GroceryFormData => {
-    if (grocery) {
-        return {
-            name: grocery.name,
-            quantity: grocery.quantity,
-            price: grocery.price,
-            purchaseDate: grocery.purchaseDate,
-            expirationDate: grocery.expirationDate,
-            categoryId: grocery.categoryId,
-        };
-    }
-
-    return {
-        name: "",
-        quantity: 1,
-        price: "",
-        purchaseDate: "",
-        expirationDate: "",
-        categoryId: "",
-    };
-};
-
-function GroceryFormModal({ open, onClose, onSave, categories, grocery }: Props) {
-    const [formData, setFormData] = useState<GroceryFormData>(createInitialFormData(grocery));
+function GroceryFormModal({ open, onClose, onSave, categories, grocery, formData, setFormData }: Props) {
     const [mode, setMode] = useState<"manual" | "ai">("manual");
     const [errors, setErrors] = useState<GroceryFormErrors>({});
 
     const handleClose = () => {
-        setFormData(createInitialFormData());
-        setErrors({});
         setMode("manual");
+        setErrors({});
         onClose();
     };
 
@@ -83,6 +62,7 @@ function GroceryFormModal({ open, onClose, onSave, categories, grocery }: Props)
                             setFormData={setFormData}
                             categories={categories}
                             errors={errors}
+                            setErrors={setErrors}
                         />
                     ) : (
                         <div className="ai-upload-placeholder">

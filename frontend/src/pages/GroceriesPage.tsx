@@ -9,6 +9,7 @@ import { useCategories } from "../hooks/useCategories.ts";
 import GroceryFormModal from "../components/groceries/groceryForm/GroceryFormModal.tsx";
 import InventoryActions from "../components/groceries/InventoryActions.tsx";
 import type { Grocery, GroceryFormData } from "../types/grocery.ts";
+import { createInitialFormData } from "../utils/createInitialFormData.ts";
 
 export default function GroceriesPage() {
     const [search, setSearch] = useState("");
@@ -18,6 +19,15 @@ export default function GroceriesPage() {
 
     const { groceries, removeGrocery, updateGroceryOutcome, addGrocery, editGrocery } = useGroceries(search, selectedCategory);
     const categories = useCategories();
+
+    const [formData, setFormData] = useState<GroceryFormData>({
+        name: "",
+        quantity: 1,
+        price: "",
+        purchaseDate: "",
+        expirationDate: "",
+        categoryId: "",
+    });
 
     const handleSaveGrocery = async (data: GroceryFormData) => {
         if (selectedGrocery) {
@@ -49,17 +59,19 @@ export default function GroceriesPage() {
                 totalItems={groceries.length}
                 onAddGrocery={() => {
                     setSelectedGrocery(undefined);
+                    setFormData(createInitialFormData());
                     setIsModalOpen(true);
                 }}
             />
 
             <GroceryFormModal
-                key={selectedGrocery?.id ?? "new"}
                 open={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSave={handleSaveGrocery}
                 categories={categories}
                 grocery={selectedGrocery}
+                formData={formData}
+                setFormData={setFormData}
             />
 
             <CategorySection
@@ -70,6 +82,7 @@ export default function GroceriesPage() {
                 onOutcomeChange={updateGroceryOutcome}
                 onEdit={(grocery) => {
                     setSelectedGrocery(grocery);
+                    setFormData(createInitialFormData(grocery));
                     setIsModalOpen(true);
                 }}
             />
