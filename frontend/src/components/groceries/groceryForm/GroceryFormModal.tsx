@@ -8,6 +8,7 @@ import { validateGroceryForm } from "../../../utils/validateGroceryForm.ts";
 type Props = {
     open: boolean;
     onClose: () => void;
+    onSave: (data: GroceryFormData) => Promise<void>;
     categories: Category[];
     grocery?: Grocery;
 };
@@ -34,7 +35,7 @@ const createInitialFormData = (grocery?: Grocery): GroceryFormData => {
     };
 };
 
-function GroceryFormModal({ open, onClose, categories, grocery }: Props) {
+function GroceryFormModal({ open, onClose, onSave, categories, grocery }: Props) {
     const [formData, setFormData] = useState<GroceryFormData>(createInitialFormData(grocery));
     const [mode, setMode] = useState<"manual" | "ai">("manual");
     const [errors, setErrors] = useState<GroceryFormErrors>({});
@@ -97,15 +98,13 @@ function GroceryFormModal({ open, onClose, categories, grocery }: Props) {
 
                     <button
                         className="save-grocery-btn"
-                        onClick={() => {
+                        onClick={async () => {
                             const validationErrors = validateGroceryForm(formData);
-
                             setErrors(validationErrors);
 
                             if (Object.keys(validationErrors).length === 0) {
-                                console.log("Valid form:", formData);
-
-                                // createGrocery(formData)
+                                await onSave(formData);
+                                handleClose();
                             }
                         }}
                     >

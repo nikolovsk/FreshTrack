@@ -14,7 +14,7 @@ export default function GroceriesPage() {
     const [selectedCategory, setSelectedCategory] = useState<number | undefined>();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { groceries, removeGrocery, updateGroceryOutcome } = useGroceries(search, selectedCategory);
+    const { groceries, removeGrocery, updateGroceryOutcome, addGrocery } = useGroceries(search, selectedCategory);
     const categories = useCategories();
 
     return (
@@ -43,6 +43,7 @@ export default function GroceriesPage() {
             <GroceryFormModal
                 open={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
+                onSave={addGrocery}
                 categories={categories}
             />
 

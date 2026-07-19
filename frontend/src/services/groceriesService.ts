@@ -1,5 +1,5 @@
 import api from "../api/axios.ts";
-import type { Grocery } from "../types/grocery.ts";
+import type { Grocery, GroceryFormData } from "../types/grocery.ts";
 
 export const getGroceries = async (
     search?: string,
@@ -25,3 +25,11 @@ export const updateOutcome = async (
 ) => {
     await api.patch(`/api/groceries/${id}/outcome?outcome=${outcome}`);
 }
+
+export const createGrocery = async (
+    grocery: GroceryFormData
+): Promise<Grocery> => {
+    const response = await api.post<Grocery>("/api/groceries", grocery);
+
+    return response.data;
+};
