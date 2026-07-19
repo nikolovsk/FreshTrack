@@ -8,14 +8,24 @@ import CategorySection from "../components/groceries/CategorySection.tsx";
 import { useCategories } from "../hooks/useCategories.ts";
 import GroceryFormModal from "../components/groceries/groceryForm/GroceryFormModal.tsx";
 import InventoryActions from "../components/groceries/InventoryActions.tsx";
+import type { Grocery, GroceryFormData } from "../types/grocery.ts";
 
 export default function GroceriesPage() {
     const [search, setSearch] = useState("");
     const [selectedCategory, setSelectedCategory] = useState<number | undefined>();
+    const [selectedGrocery, setSelectedGrocery] = useState<Grocery | undefined>();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { groceries, removeGrocery, updateGroceryOutcome, addGrocery } = useGroceries(search, selectedCategory);
+    const { groceries, removeGrocery, updateGroceryOutcome, addGrocery, editGrocery } = useGroceries(search, selectedCategory);
     const categories = useCategories();
+
+    const handleSaveGrocery = async (data: GroceryFormData) => {
+        if (selectedGrocery) {
+            await editGrocery(selectedGrocery.id, data);
+        } else {
+            await addGrocery(data);
+        }
+    };
 
     return (
         <div className="groceries-page">
@@ -37,14 +47,19 @@ export default function GroceriesPage() {
 
             <InventoryActions
                 totalItems={groceries.length}
-                onAddGrocery={() => setIsModalOpen(true)}
+                onAddGrocery={() => {
+                    setSelectedGrocery(undefined);
+                    setIsModalOpen(true);
+                }}
             />
 
             <GroceryFormModal
+                key={selectedGrocery?.id ?? "new"}
                 open={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                onSave={addGrocery}
+                onSave={handleSaveGrocery}
                 categories={categories}
+                grocery={selectedGrocery}
             />
 
             <CategorySection
@@ -53,6 +68,10 @@ export default function GroceriesPage() {
                 selectedCategory={selectedCategory}
                 onDelete={removeGrocery}
                 onOutcomeChange={updateGroceryOutcome}
+                onEdit={(grocery) => {
+                    setSelectedGrocery(grocery);
+                    setIsModalOpen(true);
+                }}
             />
         </div>
     );

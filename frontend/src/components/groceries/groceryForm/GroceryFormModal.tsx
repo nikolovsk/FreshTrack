@@ -108,7 +108,7 @@ function GroceryFormModal({ open, onClose, onSave, categories, grocery }: Props)
                             }
                         }}
                     >
-                        Save Grocery
+                        {grocery ? "Update Grocery" : "Save Grocery"}
                     </button>
                 </div>
             </div>

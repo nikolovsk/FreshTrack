@@ -33,3 +33,12 @@ export const createGrocery = async (
 
     return response.data;
 };
+
+export const updateGrocery = async (
+    id: number,
+    grocery: GroceryFormData
+): Promise<Grocery> => {
+    const response = await api.put<Grocery>(`/api/groceries/${id}`, grocery);
+
+    return response.data;
+};

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createGrocery, deleteGrocery, getGroceries, updateOutcome } from "../services/groceriesService";
+import { createGrocery, deleteGrocery, getGroceries, updateGrocery, updateOutcome } from "../services/groceriesService";
 import type { Grocery, GroceryFormData, GroceryOutcome } from "../types/grocery";
 import { useToast } from "./useToast";
 
@@ -43,5 +43,16 @@ export function useGroceries(search: string, categoryId?: number) {
         showToast("Grocery added successfully", "success");
     };
 
-    return { groceries, loading, removeGrocery, updateGroceryOutcome, addGrocery };
+    const editGrocery = async (
+        id: number,
+        grocery: GroceryFormData
+    ) => {
+        const updated = await updateGrocery(id, grocery);
+
+        setGroceries(prev => prev.map(item => item.id === id ? updated : item));
+
+        showToast("Grocery updated successfully", "success");
+    };
+
+    return { groceries, loading, removeGrocery, updateGroceryOutcome, addGrocery, editGrocery };
 }

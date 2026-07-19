@@ -17,9 +17,10 @@ type Props = {
     selectedCategory?: number;
     onDelete: (id: number) => void;
     onOutcomeChange: (id: number, outcome: GroceryOutcome) => void;
+    onEdit: (grocery: Grocery) => void;
 };
 
-function CategorySection({ groceries, search, selectedCategory, onDelete, onOutcomeChange }: Props) {
+function CategorySection({ groceries, search, selectedCategory, onDelete, onOutcomeChange, onEdit }: Props) {
     const groupedGroceries = groupGroceriesByCategory(groceries);
 
     const hasActiveFilters = Boolean(search?.trim() || selectedCategory);
@@ -102,7 +103,11 @@ function CategorySection({ groceries, search, selectedCategory, onDelete, onOutc
                                         <td>
                                             <div className="table-actions">
 
-                                                <button className="action-btn edit" title="Edit grocery">
+                                                <button
+                                                    className="action-btn edit"
+                                                    title="Edit grocery"
+                                                    onClick={() => onEdit(item)}
+                                                >
                                                     <Pencil size={18} />
                                                 </button>
 
