@@ -1,0 +1,89 @@
+import { ImagePlus, Upload, X } from "lucide-react";
+import { useState } from "react";
+
+function GroceryPhotoUpload() {
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+    const handleImageChange = (file: File) => {
+        setSelectedImage(file);
+
+        const url = URL.createObjectURL(file);
+        setPreviewUrl(url);
+    };
+
+    const handleRemoveImage = () => {
+        setSelectedImage(null);
+
+        if (previewUrl) {
+            URL.revokeObjectURL(previewUrl);
+        }
+
+        setPreviewUrl(null);
+    };
+
+    return (
+        <div className="grocery-photo-upload">
+
+            {!selectedImage ? (
+                <label className="photo-upload-area">
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                            const file = e.target.files?.[0];
+
+                            if (file) {
+                                handleImageChange(file);
+                            }
+                        }}
+                    />
+
+                    <div className="photo-upload-icon">
+                        <ImagePlus size={28} />
+                    </div>
+
+                    <h3>Upload a grocery photo</h3>
+
+                    <p>Take a photo of your groceries and let FreshTrack identify the items for you.</p>
+
+                    <span className="photo-upload-button">
+                        <Upload size={16} />
+                        Choose Photo
+                    </span>
+
+                    <span className="photo-upload-hint">JPG, PNG or WEBP (max 10MB)</span>
+                </label>
+            ) : (
+                <div className="photo-preview">
+
+                    <div className="photo-preview-image">
+                        {previewUrl && (
+                            <img
+                                src={previewUrl}
+                                alt="Selected grocery"
+                            />
+                        )}
+                    </div>
+
+                    <div className="photo-preview-info">
+                        <p>{selectedImage.name}</p>
+
+                        <button
+                            type="button"
+                            className="remove-photo-btn"
+                            onClick={handleRemoveImage}
+                        >
+                            <X size={16} />
+                            Remove Photo
+                        </button>
+                    </div>
+
+                </div>
+            )}
+
+        </div>
+    );
+}
+
+export default GroceryPhotoUpload;

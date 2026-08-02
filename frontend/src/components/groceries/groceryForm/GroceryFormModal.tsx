@@ -5,6 +5,7 @@ import { useState } from "react";
 import GroceryForm from "./GroceryForm.tsx";
 import { validateGroceryForm } from "../../../utils/validateGroceryForm.ts";
 import * as React from "react";
+import GroceryPhotoUpload from "./GroceryPhotoUpload.tsx";
 
 type Props = {
     open: boolean;
@@ -65,9 +66,7 @@ function GroceryFormModal({ open, onClose, onSave, categories, grocery, formData
                             setErrors={setErrors}
                         />
                     ) : (
-                        <div className="ai-upload-placeholder">
-                            AI Grocery Recognition coming soon...
-                        </div>
+                        <GroceryPhotoUpload />
                     )}
                 </div>
 
