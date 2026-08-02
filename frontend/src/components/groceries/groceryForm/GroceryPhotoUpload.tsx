@@ -4,6 +4,7 @@ import { useState } from "react";
 function GroceryPhotoUpload() {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     const handleImageChange = (file: File) => {
         setSelectedImage(file);
@@ -20,6 +21,27 @@ function GroceryPhotoUpload() {
         }
 
         setPreviewUrl(null);
+        setError(null);
+    };
+
+    const validateImage = (file: File): string | null => {
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+        ];
+
+        if (!allowedTypes.includes(file.type)) {
+            return "Please upload a JPEG, PNG, or WEBP image.";
+        }
+
+        const maxSize = 10 * 1024 * 1024;
+
+        if (file.size > maxSize) {
+            return "Image size must be smaller than 10 MB.";
+        }
+
+        return null;
     };
 
     return (
@@ -33,9 +55,19 @@ function GroceryPhotoUpload() {
                         onChange={(e) => {
                             const file = e.target.files?.[0];
 
-                            if (file) {
-                                handleImageChange(file);
+                            if (!file) {
+                                return;
                             }
+
+                            const validationError = validateImage(file);
+
+                            if (validationError) {
+                                setError(validationError);
+                                return;
+                            }
+
+                            setError(null);
+                            handleImageChange(file);
                         }}
                     />
 
@@ -46,6 +78,12 @@ function GroceryPhotoUpload() {
                     <h3>Upload a grocery photo</h3>
 
                     <p>Take a photo of your groceries and let FreshTrack identify the items for you.</p>
+
+                    {error && (
+                        <span className="photo-upload-error">
+                            {error}
+                        </span>
+                    )}
 
                     <span className="photo-upload-button">
                         <Upload size={16} />
