@@ -21,6 +21,7 @@ function GroceryPhotoUpload({ categories }: Props) {
 
     const [editingGrocery, setEditingGrocery] = useState<DetectedGrocery | null>(null);
     const [editFormData, setEditFormData] = useState<GroceryFormData>(createInitialFormData());
+    const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
     const handleImageChange = (file: File) => {
         setSelectedImage(file);
@@ -40,6 +41,7 @@ function GroceryPhotoUpload({ categories }: Props) {
         setError(null);
 
         setEditingGrocery(null);
+        setEditingIndex(null);
         setEditFormData(createInitialFormData());
     };
 
@@ -174,8 +176,9 @@ function GroceryPhotoUpload({ categories }: Props) {
                                     prev.filter((_, itemIndex) => itemIndex !== index)
                                 );
                             }}
-                            onEdit={(grocery) => {
+                            onEdit={(grocery, index) => {
                                 setEditingGrocery(grocery);
+                                setEditingIndex(index);
 
                                 setEditFormData({
                                     name: grocery.name,
@@ -209,13 +212,13 @@ function GroceryPhotoUpload({ categories }: Props) {
                 open={editingGrocery !== null}
                 onClose={() => setEditingGrocery(null)}
                 onSave={async (data) => {
-                    if (!editingGrocery) {
+                    if (editingIndex === null) {
                         return;
                     }
 
                     setDetectedGroceries((prev) =>
-                        prev.map((grocery) =>
-                            grocery === editingGrocery
+                        prev.map((grocery, index) =>
+                            index === editingIndex
                                 ? {
                                     name: data.name,
                                     quantity: data.quantity,
@@ -229,6 +232,7 @@ function GroceryPhotoUpload({ categories }: Props) {
                     );
 
                     setEditingGrocery(null);
+                    setEditingIndex(null);
                 }}
                 categories={categories}
                 grocery={undefined}
