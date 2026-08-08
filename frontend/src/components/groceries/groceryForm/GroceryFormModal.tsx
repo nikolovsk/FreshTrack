@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import type { Grocery, GroceryFormData, GroceryFormErrors } from "../../../types/grocery.ts";
+import type { DetectedGrocery, Grocery, GroceryFormData, GroceryFormErrors } from "../../../types/grocery.ts";
 import type { Category } from "../../../types/category.ts";
 import { useState } from "react";
 import GroceryForm from "./GroceryForm.tsx";
@@ -20,6 +20,7 @@ type Props = {
 function GroceryFormModal({ open, onClose, onSave, categories, grocery, formData, setFormData }: Props) {
     const [mode, setMode] = useState<"manual" | "ai">("manual");
     const [errors, setErrors] = useState<GroceryFormErrors>({});
+    const [detectedGroceries, setDetectedGroceries] = useState<DetectedGrocery[]>([]);
 
     const handleClose = () => {
         setMode("manual");
@@ -66,7 +67,10 @@ function GroceryFormModal({ open, onClose, onSave, categories, grocery, formData
                             setErrors={setErrors}
                         />
                     ) : (
-                        <GroceryPhotoUpload categories={categories} />
+                        <GroceryPhotoUpload
+                            categories={categories}
+                            groceries={detectedGroceries}
+                            setGroceries={setDetectedGroceries}/>
                     )}
                 </div>
 
@@ -78,13 +82,53 @@ function GroceryFormModal({ open, onClose, onSave, categories, grocery, formData
                     <button
                         className="save-grocery-btn"
                         onClick={async () => {
-                            const validationErrors = validateGroceryForm(formData);
-                            setErrors(validationErrors);
+                            if (mode === "manual") {
+                                const validationErrors = validateGroceryForm(formData);
+                                setErrors(validationErrors);
 
-                            if (Object.keys(validationErrors).length === 0) {
-                                await onSave(formData);
-                                handleClose();
+                                if (Object.keys(validationErrors).length === 0) {
+                                    await onSave(formData);
+                                    handleClose();
+                                }
+
+                                return;
                             }
+
+                            if (detectedGroceries.length === 0) {
+                                return;
+                            }
+
+                            for (const grocery of detectedGroceries) {
+                                const groceryData: GroceryFormData = {
+                                    name: grocery.name,
+                                    quantity: grocery.quantity,
+                                    price: grocery.price,
+                                    purchaseDate: grocery.purchaseDate,
+                                    expirationDate: grocery.expirationDate,
+                                    categoryId: grocery.categoryId,
+                                };
+
+                                const validationErrors = validateGroceryForm(groceryData);
+
+                                if (Object.keys(validationErrors).length > 0) {
+                                    return;
+                                }
+                            }
+
+                            for (const grocery of detectedGroceries) {
+                                const groceryData: GroceryFormData = {
+                                    name: grocery.name,
+                                    quantity: grocery.quantity,
+                                    price: grocery.price,
+                                    purchaseDate: grocery.purchaseDate,
+                                    expirationDate: grocery.expirationDate,
+                                    categoryId: grocery.categoryId,
+                                };
+
+                                await onSave(groceryData);
+                            }
+
+                            handleClose();
                         }}
                     >
                         {grocery ? "Update Grocery" : "Save Grocery"}

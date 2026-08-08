@@ -5,18 +5,20 @@ import DetectedGroceryList from "./DetectedGroceryList.tsx";
 import { createInitialFormData } from "../../../utils/createInitialFormData.ts";
 import type { Category } from "../../../types/category.ts";
 import GroceryFormModal from "./GroceryFormModal.tsx";
+import * as React from "react";
 
 type Props = {
     categories: Category[];
+    groceries: DetectedGrocery[];
+    setGroceries: React.Dispatch<React.SetStateAction<DetectedGrocery[]>>;
 };
 
-function GroceryPhotoUpload({ categories }: Props) {
+function GroceryPhotoUpload({ categories, groceries, setGroceries }: Props) {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     const [analyzing, setAnalyzing] = useState(false);
-    const [detectedGroceries, setDetectedGroceries] = useState<DetectedGrocery[]>([]);
     const [analysisComplete, setAnalysisComplete] = useState(false);
 
     const [editingGrocery, setEditingGrocery] = useState<DetectedGrocery | null>(null);
@@ -73,7 +75,7 @@ function GroceryPhotoUpload({ categories }: Props) {
 
         await new Promise((resolve) => setTimeout(resolve, 1500));
 
-        setDetectedGroceries([
+        setGroceries([
             {
                 name: "Milk",
                 quantity: 1,
@@ -170,9 +172,9 @@ function GroceryPhotoUpload({ categories }: Props) {
 
                     {analysisComplete && (
                         <DetectedGroceryList
-                            groceries={detectedGroceries}
+                            groceries={groceries}
                             onRemove={(index) => {
-                                setDetectedGroceries((prev) =>
+                                setGroceries((prev) =>
                                     prev.filter((_, itemIndex) => itemIndex !== index)
                                 );
                             }}
@@ -216,7 +218,7 @@ function GroceryPhotoUpload({ categories }: Props) {
                         return;
                     }
 
-                    setDetectedGroceries((prev) =>
+                    setGroceries((prev) =>
                         prev.map((grocery, index) =>
                             index === editingIndex
                                 ? {
