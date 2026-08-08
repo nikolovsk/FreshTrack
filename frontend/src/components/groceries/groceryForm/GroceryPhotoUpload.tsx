@@ -1,9 +1,16 @@
 import { ImagePlus, Sparkles, Upload, X } from "lucide-react";
 import { useState } from "react";
-import type { DetectedGrocery } from "../../../types/grocery.ts";
+import type { DetectedGrocery, GroceryFormData } from "../../../types/grocery.ts";
 import DetectedGroceryList from "./DetectedGroceryList.tsx";
+import { createInitialFormData } from "../../../utils/createInitialFormData.ts";
+import type { Category } from "../../../types/category.ts";
+import GroceryFormModal from "./GroceryFormModal.tsx";
 
-function GroceryPhotoUpload() {
+type Props = {
+    categories: Category[];
+};
+
+function GroceryPhotoUpload({ categories }: Props) {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -11,6 +18,9 @@ function GroceryPhotoUpload() {
     const [analyzing, setAnalyzing] = useState(false);
     const [detectedGroceries, setDetectedGroceries] = useState<DetectedGrocery[]>([]);
     const [analysisComplete, setAnalysisComplete] = useState(false);
+
+    const [editingGrocery, setEditingGrocery] = useState<DetectedGrocery | null>(null);
+    const [editFormData, setEditFormData] = useState<GroceryFormData>(createInitialFormData());
 
     const handleImageChange = (file: File) => {
         setSelectedImage(file);
@@ -28,6 +38,9 @@ function GroceryPhotoUpload() {
 
         setPreviewUrl(null);
         setError(null);
+
+        setEditingGrocery(null);
+        setEditFormData(createInitialFormData());
     };
 
     const validateImage = (file: File): string | null => {
@@ -62,12 +75,18 @@ function GroceryPhotoUpload() {
             {
                 name: "Milk",
                 quantity: 1,
-                categoryId: "",
+                categoryId: 5,
+                price: "",
+                purchaseDate: "",
+                expirationDate: "",
             },
             {
                 name: "Tomatoes",
                 quantity: 5,
                 categoryId: "",
+                price: "",
+                purchaseDate: "",
+                expirationDate: "",
             },
         ]);
 
@@ -155,6 +174,18 @@ function GroceryPhotoUpload() {
                                     prev.filter((_, itemIndex) => itemIndex !== index)
                                 );
                             }}
+                            onEdit={(grocery) => {
+                                setEditingGrocery(grocery);
+
+                                setEditFormData({
+                                    name: grocery.name,
+                                    quantity: grocery.quantity,
+                                    price: grocery.price,
+                                    purchaseDate: grocery.purchaseDate,
+                                    expirationDate: grocery.expirationDate,
+                                    categoryId: grocery.categoryId,
+                                });
+                            }}
                         />
                     )}
 
@@ -173,6 +204,37 @@ function GroceryPhotoUpload() {
 
                 </div>
             )}
+
+            <GroceryFormModal
+                open={editingGrocery !== null}
+                onClose={() => setEditingGrocery(null)}
+                onSave={async (data) => {
+                    if (!editingGrocery) {
+                        return;
+                    }
+
+                    setDetectedGroceries((prev) =>
+                        prev.map((grocery) =>
+                            grocery === editingGrocery
+                                ? {
+                                    name: data.name,
+                                    quantity: data.quantity,
+                                    price: data.price,
+                                    purchaseDate: data.purchaseDate,
+                                    expirationDate: data.expirationDate,
+                                    categoryId: data.categoryId,
+                                }
+                                : grocery
+                        )
+                    );
+
+                    setEditingGrocery(null);
+                }}
+                categories={categories}
+                grocery={undefined}
+                formData={editFormData}
+                setFormData={setEditFormData}
+            />
 
         </div>
     );

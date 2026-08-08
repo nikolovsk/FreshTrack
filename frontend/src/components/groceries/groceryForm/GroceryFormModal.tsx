@@ -66,7 +66,7 @@ function GroceryFormModal({ open, onClose, onSave, categories, grocery, formData
                             setErrors={setErrors}
                         />
                     ) : (
-                        <GroceryPhotoUpload />
+                        <GroceryPhotoUpload categories={categories} />
                     )}
                 </div>
 

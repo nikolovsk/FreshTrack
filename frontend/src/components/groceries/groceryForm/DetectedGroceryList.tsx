@@ -4,9 +4,10 @@ import type { DetectedGrocery } from "../../../types/grocery.ts";
 type Props = {
     groceries: DetectedGrocery[];
     onRemove: (index: number) => void;
+    onEdit: (grocery: DetectedGrocery, index: number) => void;
 };
 
-function DetectedGroceryList({ groceries, onRemove }: Props) {
+function DetectedGroceryList({ groceries, onRemove, onEdit }: Props) {
     return (
         <div className="detected-groceries">
 
@@ -49,6 +50,7 @@ function DetectedGroceryList({ groceries, onRemove }: Props) {
                                     type="button"
                                     className="detected-action-btn edit"
                                     title="Edit grocery"
+                                    onClick={() => onEdit(grocery, index)}
                                 >
                                     <Pencil size={16} />
                                 </button>
