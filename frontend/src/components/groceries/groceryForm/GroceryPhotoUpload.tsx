@@ -1,10 +1,16 @@
-import { ImagePlus, Upload, X } from "lucide-react";
+import { ImagePlus, Sparkles, Upload, X } from "lucide-react";
 import { useState } from "react";
+import type { DetectedGrocery } from "../../../types/grocery.ts";
+import DetectedGroceryList from "./DetectedGroceryList.tsx";
 
 function GroceryPhotoUpload() {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+
+    const [analyzing, setAnalyzing] = useState(false);
+    const [detectedGroceries, setDetectedGroceries] = useState<DetectedGrocery[]>([]);
+    const [analysisComplete, setAnalysisComplete] = useState(false);
 
     const handleImageChange = (file: File) => {
         setSelectedImage(file);
@@ -42,6 +48,31 @@ function GroceryPhotoUpload() {
         }
 
         return null;
+    };
+
+    const handleAnalyze = async () => {
+        if (!selectedImage) return;
+
+        setAnalyzing(true);
+        setAnalysisComplete(false);
+
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+
+        setDetectedGroceries([
+            {
+                name: "Milk",
+                quantity: 1,
+                categoryId: "",
+            },
+            {
+                name: "Tomatoes",
+                quantity: 5,
+                categoryId: "",
+            },
+        ]);
+
+        setAnalyzing(false);
+        setAnalysisComplete(true);
     };
 
     return (
@@ -103,6 +134,29 @@ function GroceryPhotoUpload() {
                             />
                         )}
                     </div>
+
+                    {!analysisComplete && (
+                        <button
+                            type="button"
+                            className="analyze-photo-btn"
+                            onClick={handleAnalyze}
+                            disabled={analyzing}
+                        >
+                            <Sparkles size={16} />
+                            <span>{analyzing ? "Analyzing your photo..." : "Analyze Photo"}</span>
+                        </button>
+                    )}
+
+                    {analysisComplete && (
+                        <DetectedGroceryList
+                            groceries={detectedGroceries}
+                            onRemove={(index) => {
+                                setDetectedGroceries((prev) =>
+                                    prev.filter((_, itemIndex) => itemIndex !== index)
+                                );
+                            }}
+                        />
+                    )}
 
                     <div className="photo-preview-info">
                         <p>{selectedImage.name}</p>

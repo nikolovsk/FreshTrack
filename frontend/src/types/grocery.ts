@@ -32,3 +32,9 @@ export type GroceryFormErrors = {
     expirationDate?: string;
     categoryId?: string;
 };
+
+export type DetectedGrocery = {
+    name: string;
+    quantity: number;
+    categoryId: number | "";
+};

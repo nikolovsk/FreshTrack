@@ -243,7 +243,7 @@
     padding: 11px 18px;
     border-radius: 10px;
     background: var(--primary);
-    color: white;
+    color: var(--surface);
     font-size: 14px;
     font-weight: 600;
 }
@@ -268,7 +268,7 @@
     display: flex;
     justify-content: center;
     overflow: hidden;
-    max-height: 400px;
+    max-height: 360px;
     border-radius: 12px;
     background: var(--background);
 }
@@ -304,7 +304,7 @@
     gap: 6px;
     padding: 8px 12px;
     border: 1px solid var(--border-color);
-    border-radius: 9px;
+    border-radius: 10px;
     background: transparent;
     color: var(--text-secondary);
     font-size: 14px;
@@ -316,4 +316,192 @@
 .remove-photo-btn:hover {
     border-color: var(--primary);
     color: var(--primary);
+}
+
+.analyze-photo-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 18px;
+    padding: 11px 18px;
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    background: var(--primary);
+    color: var(--surface);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.18);
+    transition: all 0.2s ease;
+}
+
+.analyze-photo-btn:hover:not(:disabled) {
+    background: var(--primary-hover);
+    box-shadow: 0 6px 16px rgba(22, 163, 74, 0.24);
+}
+
+.analyze-photo-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.detected-groceries {
+    margin-top: 12px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.detected-groceries-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.detected-groceries-header h3 {
+    margin-bottom: 4px;
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.detected-groceries-header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.detected-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border: 1px solid var(--border-primary-light);
+    border-radius: 20px;
+    background: var(--primary-light);
+    color: var(--primary-hover);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.detected-grocery-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.detected-grocery-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--background);
+    transition: all 0.2s ease;
+}
+
+.detected-grocery-item:hover {
+    border-color: var(--border-primary-light);
+    background: var(--surface);
+    transform: translateX(-1px);
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
+}
+
+.detected-grocery-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    flex: 1;
+}
+
+.detected-grocery-name {
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.detected-grocery-quantity {
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.detected-grocery-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.detected-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.detected-action-btn.edit:hover {
+    color: var(--primary);
+    border-color: #86efac;
+    background: var(--primary-light);
+}
+
+.detected-action-btn.delete:hover {
+    color: var(--danger);
+    border-color: #fecaca;
+    background: #fef2f2;
+}
+
+.detected-grocery-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: var(--primary-light);
+    color: var(--primary);
+}
+
+.detected-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 16px;
+    border: 1px dashed var(--border-color);
+    border-radius: 12px;
+    background: var(--background);
+}
+
+.detected-empty-state p {
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.detected-empty-state span {
+    color: var(--text-secondary);
+    font-size: 12px;
 }
