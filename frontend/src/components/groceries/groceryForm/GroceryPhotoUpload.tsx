@@ -42,6 +42,10 @@ function GroceryPhotoUpload({ categories, groceries, setGroceries }: Props) {
         setPreviewUrl(null);
         setError(null);
 
+        setAnalyzing(false);
+        setAnalysisComplete(false);
+        setGroceries([]);
+
         setEditingGrocery(null);
         setEditingIndex(null);
         setEditFormData(createInitialFormData());
@@ -235,6 +239,7 @@ function GroceryPhotoUpload({ categories, groceries, setGroceries }: Props) {
 
                     setEditingGrocery(null);
                     setEditingIndex(null);
+                    setEditFormData(createInitialFormData());
                 }}
                 categories={categories}
                 grocery={undefined}

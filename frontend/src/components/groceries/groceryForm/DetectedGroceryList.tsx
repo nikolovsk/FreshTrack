@@ -39,10 +39,6 @@ function DetectedGroceryList({ groceries, onRemove, onEdit }: Props) {
                                 <span className="detected-grocery-name">
                                     {grocery.name}
                                 </span>
-
-                                <span className="detected-grocery-quantity">
-                                    Quantity: {grocery.quantity}
-                                </span>
                             </div>
 
                             <div className="detected-grocery-actions">

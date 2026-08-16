@@ -33,4 +33,11 @@ export type GroceryFormErrors = {
     categoryId?: string;
 };
 
-export type DetectedGrocery = GroceryFormData;
+export type DetectedGrocery = {
+    name: string;
+    quantity: number;
+    price: number | "";
+    purchaseDate: string;
+    expirationDate: string;
+    categoryId: number | "";
+};

@@ -432,12 +432,6 @@
     font-weight: 600;
 }
 
-.detected-grocery-quantity {
-    color: var(--text-secondary);
-    font-size: 12px;
-    font-weight: 400;
-}
-
 .detected-grocery-actions {
     display: flex;
     align-items: center;
