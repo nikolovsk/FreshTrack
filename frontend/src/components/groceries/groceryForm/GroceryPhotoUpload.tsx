@@ -6,6 +6,7 @@ import { createInitialFormData } from "../../../utils/createInitialFormData.ts";
 import type { Category } from "../../../types/category.ts";
 import GroceryFormModal from "./GroceryFormModal.tsx";
 import * as React from "react";
+import { recognizeGroceries } from "../../../services/groceriesService.ts";
 
 type Props = {
     categories: Category[];
@@ -76,30 +77,29 @@ function GroceryPhotoUpload({ categories, groceries, setGroceries }: Props) {
 
         setAnalyzing(true);
         setAnalysisComplete(false);
+        setError(null);
 
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        try {
+            const detectedGroceries = await recognizeGroceries(selectedImage);
 
-        setGroceries([
-            {
-                name: "Milk",
-                quantity: 1,
-                categoryId: 5,
-                price: "",
-                purchaseDate: "",
-                expirationDate: "",
-            },
-            {
-                name: "Tomatoes",
-                quantity: 5,
-                categoryId: "",
-                price: "",
-                purchaseDate: "",
-                expirationDate: "",
-            },
-        ]);
+            setGroceries(
+                detectedGroceries.map((grocery) => ({
+                    name: grocery.name,
+                    quantity: 1,
+                    price: "",
+                    purchaseDate: "",
+                    expirationDate: "",
+                    categoryId: "",
+                }))
+            );
 
-        setAnalyzing(false);
-        setAnalysisComplete(true);
+            setAnalysisComplete(true);
+        } catch (error) {
+            console.error("Failed to analyze grocery image:", error);
+            setError("Something went wrong while analyzing the image.");
+        } finally {
+            setAnalyzing(false);
+        }
     };
 
     return (
