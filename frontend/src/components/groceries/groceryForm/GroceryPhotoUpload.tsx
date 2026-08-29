@@ -7,6 +7,7 @@ import type { Category } from "../../../types/category.ts";
 import GroceryFormModal from "./GroceryFormModal.tsx";
 import * as React from "react";
 import { recognizeGroceries } from "../../../services/groceriesService.ts";
+import axios from "axios";
 
 type Props = {
     categories: Category[];
@@ -87,15 +88,21 @@ function GroceryPhotoUpload({ categories, groceries, setGroceries }: Props) {
                     name: grocery.name,
                     quantity: 1,
                     price: "",
-                    purchaseDate: "",
+                    purchaseDate: new Date().toISOString().split("T")[0],
                     expirationDate: "",
-                    categoryId: "",
+                    categoryId: grocery.categoryId,
                 }))
             );
 
             setAnalysisComplete(true);
         } catch (error) {
             console.error("Failed to analyze grocery image:", error);
+
+            if (axios.isAxiosError(error)) {
+                console.error("Status:", error.response?.status);
+                console.error("Backend response:", error.response?.data);
+            }
+
             setError("Something went wrong while analyzing the image.");
         } finally {
             setAnalyzing(false);
@@ -137,12 +144,6 @@ function GroceryPhotoUpload({ categories, groceries, setGroceries }: Props) {
 
                     <p>Take a photo of your groceries and let FreshTrack identify the items for you.</p>
 
-                    {error && (
-                        <span className="photo-upload-error">
-                            {error}
-                        </span>
-                    )}
-
                     <span className="photo-upload-button">
                         <Upload size={16} />
                         Choose Photo
@@ -163,15 +164,21 @@ function GroceryPhotoUpload({ categories, groceries, setGroceries }: Props) {
                     </div>
 
                     {!analysisComplete && (
-                        <button
-                            type="button"
-                            className="analyze-photo-btn"
-                            onClick={handleAnalyze}
-                            disabled={analyzing}
-                        >
-                            <Sparkles size={16} />
-                            <span>{analyzing ? "Analyzing your photo..." : "Analyze Photo"}</span>
-                        </button>
+                        <>
+                            <button
+                                type="button"
+                                className="analyze-photo-btn"
+                                onClick={handleAnalyze}
+                                disabled={analyzing}
+                            >
+                                <Sparkles size={16} />
+                                <span>{analyzing ? "Analyzing your photo..." : "Analyze Photo"}</span>
+                            </button>
+
+                            {error && (
+                                <span className="photo-upload-error">{error}</span>
+                            )}
+                        </>
                     )}
 
                     {analysisComplete && (

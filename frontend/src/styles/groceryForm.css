@@ -374,10 +374,23 @@
     font-weight: 700;
 }
 
-.detected-groceries-header p {
+.detected-groceries-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.detected-groceries-info svg {
+    flex-shrink: 0;
+    color: #b42318;
+}
+
+.detected-groceries-info p {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
     color: var(--text-secondary);
-    font-size: 14px;
-    line-height: 1.5;
 }
 
 .detected-count {
@@ -466,15 +479,24 @@
 }
 
 .detected-grocery-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    color: #98a2b3;
+    background: #f2f4f7;
     flex-shrink: 0;
-    border-radius: 10px;
-    background: var(--primary-light);
-    color: var(--primary);
+}
+
+.detected-grocery-icon.complete {
+    color: #12b76a;
+    background: #ecfdf3;
+}
+
+.detected-grocery-item.complete {
+    border-color: #d1fadf;
 }
 
 .detected-empty-state {

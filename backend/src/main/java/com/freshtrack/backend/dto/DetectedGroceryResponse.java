@@ -1,6 +1,7 @@
 package com.freshtrack.backend.dto;
 
 public record DetectedGroceryResponse(
-        String name
+        String name,
+        Long categoryId
 ) {
 }
