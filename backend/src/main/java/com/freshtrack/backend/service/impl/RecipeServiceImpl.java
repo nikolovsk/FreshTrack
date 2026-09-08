@@ -2,7 +2,9 @@ package com.freshtrack.backend.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.freshtrack.backend.dto.GroceryItemResponse;
 import com.freshtrack.backend.dto.RecipeResponse;
+import com.freshtrack.backend.service.GroceryItemService;
 import com.freshtrack.backend.service.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
+    private final GroceryItemService groceryItemService;
 
     @Override
     public List<RecipeResponse> getRecipesByIngredient(String ingredient) {
@@ -106,5 +109,26 @@ public class RecipeServiceImpl implements RecipeService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse recipe details.", e);
         }
+    }
+
+    @Override
+    public List<RecipeResponse> getRecipesForUseSoon() {
+        List<String> ingredients = getUseSoonIngredients();
+
+        List<RecipeResponse> recipes = new ArrayList<>();
+
+        for (String ingredient : ingredients) {
+            recipes.addAll(getRecipesByIngredient(ingredient));
+        }
+
+        return recipes;
+    }
+
+    private List<String> getUseSoonIngredients() {
+
+        return groceryItemService.getUseSoonGroceryItems()
+                .stream()
+                .map(GroceryItemResponse::name)
+                .toList();
     }
 }

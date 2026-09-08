@@ -20,4 +20,6 @@ public interface GroceryItemService {
     void deleteGroceryItem(Long id);
 
     void updateOutcome(Long id, GroceryOutcome outcome);
+
+    List<GroceryItemResponse> getUseSoonGroceryItems();
 }

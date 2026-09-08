@@ -25,4 +25,9 @@ public class RecipeController {
     public ResponseEntity<RecipeResponse> getRecipeById(@PathVariable String id) {
         return ResponseEntity.ok(recipeService.getRecipeById(id));
     }
+
+    @GetMapping("/use-soon")
+    public ResponseEntity<List<RecipeResponse>> getRecipesForUseSoon() {
+        return ResponseEntity.ok(recipeService.getRecipesForUseSoon());
+    }
 }

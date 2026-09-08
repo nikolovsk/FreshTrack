@@ -129,6 +129,24 @@ public class GroceryItemServiceImpl implements GroceryItemService {
         groceryItemRepository.save(item);
     }
 
+    @Override
+    public List<GroceryItemResponse> getUseSoonGroceryItems() {
+        Long userId = getLoggedInUserId();
+
+        LocalDate today = LocalDate.now(clock);
+
+        Specification<GroceryItem> specification = Specification
+                .where(GroceryItemSpecification.hasUserId(userId))
+                .and(GroceryItemSpecification.hasOutcome(GroceryOutcome.ACTIVE))
+                .and(GroceryItemSpecification.hasStatus(GroceryStatus.EXPIRING_SOON, today));
+
+        return groceryItemRepository
+                .findAll(specification, Sort.by(Sort.Direction.ASC, "expirationDate"))
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
+    }
+
     private Long getLoggedInUserId() {
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();

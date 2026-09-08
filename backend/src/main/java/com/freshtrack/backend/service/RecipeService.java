@@ -9,4 +9,6 @@ public interface RecipeService {
     List<RecipeResponse> getRecipesByIngredient(String ingredient);
 
     RecipeResponse getRecipeById(String id);
+
+    List<RecipeResponse> getRecipesForUseSoon();
 }
