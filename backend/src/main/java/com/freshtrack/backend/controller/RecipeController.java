@@ -1,5 +1,6 @@
 package com.freshtrack.backend.controller;
 
+import com.freshtrack.backend.dto.RecipeRecommendationResponse;
 import com.freshtrack.backend.dto.RecipeResponse;
 import com.freshtrack.backend.service.RecipeService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class RecipeController {
     }
 
     @GetMapping("/use-soon")
-    public ResponseEntity<List<RecipeResponse>> getRecipesForUseSoon() {
+    public ResponseEntity<List<RecipeRecommendationResponse>> getRecipesForUseSoon() {
         return ResponseEntity.ok(recipeService.getRecipesForUseSoon());
     }
 }

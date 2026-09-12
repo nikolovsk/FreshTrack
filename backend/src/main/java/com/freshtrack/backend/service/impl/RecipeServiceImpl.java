@@ -3,6 +3,7 @@ package com.freshtrack.backend.service.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freshtrack.backend.dto.GroceryItemResponse;
+import com.freshtrack.backend.dto.RecipeRecommendationResponse;
 import com.freshtrack.backend.dto.RecipeResponse;
 import com.freshtrack.backend.service.GroceryItemService;
 import com.freshtrack.backend.service.RecipeService;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -112,16 +115,39 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<RecipeResponse> getRecipesForUseSoon() {
-        List<String> ingredients = getUseSoonIngredients();
+    public List<RecipeRecommendationResponse> getRecipesForUseSoon() {
 
-        List<RecipeResponse> recipes = new ArrayList<>();
+        List<String> ingredients = getUseSoonIngredients();
+        Map<String, RecipeRecommendationResponse> recipeMap = new LinkedHashMap<>();
 
         for (String ingredient : ingredients) {
-            recipes.addAll(getRecipesByIngredient(ingredient));
+            List<RecipeResponse> recipes = getRecipesByIngredient(ingredient);
+
+            for (RecipeResponse recipe : recipes) {
+                RecipeRecommendationResponse existingRecipe = recipeMap.get(recipe.id());
+
+                if (existingRecipe == null) {
+                    recipeMap.put(
+                            recipe.id(),
+                            new RecipeRecommendationResponse(
+                                    recipe.id(),
+                                    recipe.name(),
+                                    recipe.imageUrl(),
+                                    new ArrayList<>(List.of(ingredient))
+                            )
+                    );
+                } else if (!existingRecipe.matchedIngredients().contains(ingredient)) {
+                    existingRecipe.matchedIngredients().add(ingredient);
+                }
+            }
         }
 
-        return recipes;
+        return recipeMap.values()
+                .stream()
+                .sorted((a, b) ->
+                        Integer.compare(b.matchedIngredients().size(), a.matchedIngredients().size())
+                )
+                .toList();
     }
 
     private List<String> getUseSoonIngredients() {

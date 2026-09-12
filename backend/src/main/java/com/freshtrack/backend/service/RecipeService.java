@@ -1,5 +1,6 @@
 package com.freshtrack.backend.service;
 
+import com.freshtrack.backend.dto.RecipeRecommendationResponse;
 import com.freshtrack.backend.dto.RecipeResponse;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface RecipeService {
 
     RecipeResponse getRecipeById(String id);
 
-    List<RecipeResponse> getRecipesForUseSoon();
+    List<RecipeRecommendationResponse> getRecipesForUseSoon();
 }
