@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage.tsx";
 import ProtectedRoute from "./routes/ProtectedRoute.tsx";
 import AppLayout from "./layout/AppLayout.tsx";
 import GroceriesPage from "./pages/GroceriesPage.tsx";
+import RecipesPage from "./pages/RecipesPage.tsx";
 
 function App() {
   return (
@@ -14,8 +15,9 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
               <Route element={<AppLayout />}>
-                  <Route path="/" element={<HomePage />} />
+                  <Route path="/" element={ <HomePage /> } />
                   <Route path="/groceries" element={ <GroceriesPage /> } />
+                  <Route path="/recipes" element={ <RecipesPage /> } />
               </Route>
           </Route>
       </Routes>

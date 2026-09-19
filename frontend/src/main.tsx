@@ -13,6 +13,7 @@ import "./styles/toast.css";
 import "./styles/emptyState.css";
 import { ToastProvider } from "./context/toast/ToastProvider.tsx";
 import "./styles/groceryForm.css";
+import "./styles/recipes.css";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

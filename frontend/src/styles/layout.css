@@ -243,3 +243,58 @@
     border: none;
     cursor: pointer;
 }
+
+.recipe-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.pagination-pages {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pagination-button {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dfe8e0;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #526057;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease;
+}
+
+.pagination-button:hover:not(:disabled):not(.active) {
+    border-color: #b9d4bd;
+    background: #f5faf5;
+    color: #347c49;
+}
+
+.pagination-button.active {
+    border-color: #347c49;
+    background: #347c49;
+    color: #ffffff;
+}
+
+.pagination-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.pagination-arrow {
+    flex-shrink: 0;
+}
