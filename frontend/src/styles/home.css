@@ -54,6 +54,7 @@
 .btn.primary {
     background: var(--primary);
     color: var(--surface);
+    align-items: center;
 }
 
 .btn.secondary {

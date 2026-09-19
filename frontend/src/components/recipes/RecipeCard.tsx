@@ -27,7 +27,6 @@ function RecipeCard({ recipe, onClick }: Props) {
             </div>
 
             <div className="recipe-card-content">
-
                 <h2>{recipe.name}</h2>
 
                 <div className="recipe-card-matches">

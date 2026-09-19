@@ -3,7 +3,7 @@ import { getRecommendedRecipes } from "../services/recipesService.ts";
 import type { RecipeRecommendation } from "../types/recipe.ts";
 import RecipesHeader from "../components/recipes/RecipesHeader.tsx";
 import RecipeGrid from "../components/recipes/RecipeGrid.tsx";
-import RecipeControls from "../components/recipes/RecipesSearch.tsx";
+import RecipeSearch from "../components/recipes/RecipesSearch.tsx";
 import Pagination from "../components/layout/pagination/Pagination.tsx";
 import EmptyState from "../components/EmptyState.tsx";
 
@@ -58,15 +58,11 @@ function RecipesPage() {
             <div className="recipes-content">
 
                 {loading && (
-                    <div className="recipes-message">
-                        Finding the best recipes for your groceries...
-                    </div>
+                    <div>Finding the best recipes for your groceries...</div>
                 )}
 
                 {!loading && error && (
-                    <div className="recipes-message recipes-error">
-                        {error}
-                    </div>
+                    <div>{error}</div>
                 )}
 
                 {!loading && !error && recipes.length === 0 && (
@@ -80,18 +76,18 @@ function RecipesPage() {
                     <section className="recommended-recipes">
 
                         <div className="recommended-recipes-header">
-                            <div>
+                            <span>
                                 <h2>Recommended for You</h2>
                                 <p>Recipes selected based on your groceries that are expiring soon.</p>
-                            </div>
+                            </span>
 
                             <span className="recommended-recipes-count">
-                                {recipes.length} recipe
-                                {recipes.length !== 1 ? "s" : ""}
+                                {filteredRecipes.length} recipe
+                                {filteredRecipes.length !== 1 ? "s" : ""}
                             </span>
                         </div>
 
-                        <RecipeControls
+                        <RecipeSearch
                             search={search}
                             onSearchChange={(value) => {
                                 setSearch(value);

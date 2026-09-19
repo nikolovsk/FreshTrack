@@ -5,22 +5,20 @@ type Props = {
     onSearchChange: (value: string) => void;
 };
 
-function RecipeControls({ search, onSearchChange }: Props) {
+function RecipeSearch({ search, onSearchChange }: Props) {
     return (
-        <div className="recipe-controls">
-            <div className="recipe-search">
-                <Search size={18} />
+        <div className="recipe-search">
+            <Search size={16} />
 
-                <input
-                    type="text"
-                    value={search}
-                    onChange={(event) => onSearchChange(event.target.value)}
-                    placeholder="Search recipes or ingredients..."
-                    aria-label="Search recipes or ingredients"
-                />
-            </div>
+            <input
+                type="text"
+                value={search}
+                onChange={(event) => onSearchChange(event.target.value)}
+                placeholder="Search recipes or ingredients..."
+                aria-label="Search recipes or ingredients"
+            />
         </div>
     );
 }
 
-export default RecipeControls;
+export default RecipeSearch;
