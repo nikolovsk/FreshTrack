@@ -22,17 +22,20 @@ export function useGroceries(search: string, categoryId?: number) {
         showToast("Grocery successfully deleted", "success");
     };
 
-    const updateGroceryOutcome = async (
-        id: number,
-        outcome: GroceryOutcome
-    ) => {
-        await updateOutcome(id, outcome);
-        setGroceries((prevState) => prevState.filter((g) => g.id !== id));
+    const updateGroceryOutcome = async (id: number, outcome: GroceryOutcome) => {
+        try {
+            await updateOutcome(id, outcome);
 
-        const message = outcome === "CONSUMED" ?
-            "Item marked as consumed" : "Item marked as wasted";
+            setGroceries((prevState) =>
+                prevState.filter((g) => g.id !== id)
+            );
 
-        showToast(message, "info");
+            const message = outcome === "CONSUMED" ? "Item marked as consumed" : "Item marked as wasted";
+
+            showToast(message, "success");
+        } catch {
+            showToast("Could not update the grocery item. Please try again.", "error");
+        }
     };
 
     const addGrocery = async (grocery: GroceryFormData) => {

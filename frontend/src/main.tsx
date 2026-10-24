@@ -15,6 +15,7 @@ import { ToastProvider } from "./context/toast/ToastProvider.tsx";
 import "./styles/groceryForm.css";
 import "./styles/recipes.css";
 import "./styles/recipeDetails.css";
+import "./styles/dashboard.css";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
