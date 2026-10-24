@@ -55,10 +55,14 @@ function DashboardPage() {
         };
     }, [period, retryCount]);
 
-    const formatNumber = (amount: number) =>
-        new Intl.NumberFormat("en-MK", {maximumFractionDigits: 2,}).format(amount);
+    const formatCurrency = (amount: number) =>
+        new Intl.NumberFormat("en-MK", {
+            style: "currency",
+            currency: "MKD",
+            maximumFractionDigits: 2,
+        }).format(amount);
 
-    const historicalStats = getHistoricalStats(summary, formatNumber);
+    const historicalStats = getHistoricalStats(summary, formatCurrency);
     const inventoryStats = getInventoryStats(summary);
 
     return (
