@@ -1,7 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
-import { AlertCircle, CalendarDays, CheckCircle2, Clock3, Leaf, Package, TrendingDown, Wallet } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AlertCircle, CalendarDays } from "lucide-react";
 import { getDashboardSummary, type DashboardPeriod, type DashboardSummary } from "../services/dashboardService.ts";
 import { getDashboardDateRange } from "../utils/dashboardDateUtils.ts";
+import { getHistoricalStats, getInventoryStats } from "../utils/dashboardStats.ts";
+import DashboardSection from "../components/dashboards/DashboardSection.tsx";
+import DashboardStatCard from "../components/dashboards/DashboardStatCard.tsx";
+import DashboardInventoryCard from "../components/dashboards/DashboardInventoryCard.tsx";
 
 const periodOptions: { label: string; value: DashboardPeriod }[] = [
     { label: "This Month", value: "THIS_MONTH" },
@@ -15,84 +19,47 @@ function DashboardPage() {
     const [summary, setSummary] = useState<DashboardSummary | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
-    const fetchSummary = useCallback(async () => {
-        setLoading(true);
-        setError(null);
-
-        try {
-            const { startDate, endDate } = getDashboardDateRange(period);
-            const data = await getDashboardSummary(startDate, endDate);
-            setSummary(data);
-        } catch {
-            setError("We couldn't load your dashboard statistics. Please try again.");
-        } finally {
-            setLoading(false);
-        }
-    }, [period]);
+    const [retryCount, setRetryCount] = useState(0);
 
     useEffect(() => {
-        void fetchSummary();
-    }, [fetchSummary]);
+        let isActive = true;
 
-    const formatCurrency = (amount: number) =>
-        new Intl.NumberFormat("en-MK", {
-            style: "currency",
-            currency: "MKD",
-            maximumFractionDigits: 2,
-        }).format(amount);
+        const loadSummary = async () => {
+            setLoading(true);
+            setError(null);
 
-    const historicalStats = [
-        {
-            label: "Groceries Purchased",
-            value: summary?.groceriesPurchased ?? 0,
-            icon: Package,
-            color: "green",
-            description: "Grocery entries purchased",
-        },
-        {
-            label: "Total Spending",
-            value: formatCurrency(summary?.totalSpending ?? 0),
-            icon: Wallet,
-            color: "blue",
-            description: "Money spent on groceries",
-        },
-        {
-            label: "Items Consumed",
-            value: summary?.itemsConsumed ?? 0,
-            icon: CheckCircle2,
-            color: "purple",
-            description: "Items marked as consumed",
-        },
-        {
-            label: "Items Wasted",
-            value: summary?.itemsWasted ?? 0,
-            icon: TrendingDown,
-            color: "orange",
-            description: "Items marked as wasted",
-        },
-    ];
+            try {
+                const { startDate, endDate } = getDashboardDateRange(period);
+                const data = await getDashboardSummary(startDate, endDate);
 
-    const inventoryStats = [
-        {
-            label: "Fresh",
-            value: summary?.freshItems ?? 0,
-            icon: Leaf,
-            color: "green",
-        },
-        {
-            label: "Expiring Soon",
-            value: summary?.expiringSoonItems ?? 0,
-            icon: Clock3,
-            color: "orange",
-        },
-        {
-            label: "Expired",
-            value: summary?.expiredItems ?? 0,
-            icon: AlertCircle,
-            color: "red",
-        },
-    ];
+                if (isActive) {
+                    setSummary(data);
+                }
+            } catch {
+                if (isActive) {
+                    setError(
+                        "We couldn't load your dashboard statistics. Please try again."
+                    );
+                }
+            } finally {
+                if (isActive) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        void loadSummary();
+
+        return () => {
+            isActive = false;
+        };
+    }, [period, retryCount]);
+
+    const formatNumber = (amount: number) =>
+        new Intl.NumberFormat("en-MK", {maximumFractionDigits: 2,}).format(amount);
+
+    const historicalStats = getHistoricalStats(summary, formatNumber);
+    const inventoryStats = getInventoryStats(summary);
 
     return (
         <main className="dashboard-page">
@@ -127,80 +94,50 @@ function DashboardPage() {
                 <div className="dashboard-error" role="alert">
                     <AlertCircle size={20} />
                     <span>{error}</span>
-                    <button type="button" onClick={() => void fetchSummary()}>
+                    <button type="button" onClick={() => setRetryCount((count) => count + 1)}>
                         Try again
                     </button>
                 </div>
             )}
 
             <section className="dashboard-section">
-                <div className="dashboard-section-heading">
-                    <div>
-                        <h2>Your Statistics</h2>
-                        <p>Summary for the selected period</p>
-                    </div>
-                </div>
+                <DashboardSection
+                    title="Your Statistics"
+                    description="Summary for the selected period"
+                />
 
                 <div className="dashboard-stats-grid">
-                    {historicalStats.map((stat) => {
-                        const Icon = stat.icon;
-
-                        return (
-                            <article
-                                className="dashboard-stat-card"
-                                key={stat.label}
-                                aria-busy={loading}
-                            >
-                                <div className="dashboard-stat-top">
-                                    <span className={`dashboard-stat-icon ${stat.color}`}>
-                                        <Icon size={21} />
-                                    </span>
-                                </div>
-
-                                <p className="dashboard-stat-label">{stat.label}</p>
-
-                                <strong className="dashboard-stat-value">
-                                    {loading ? "—" : stat.value}
-                                </strong>
-
-                                <span className="dashboard-stat-description">
-                                    {stat.description}
-                                </span>
-                            </article>
-                        );
-                    })}
+                    {historicalStats.map((stat) => (
+                        <DashboardStatCard
+                            key={stat.label}
+                            label={stat.label}
+                            value={stat.value}
+                            icon={stat.icon}
+                            color={stat.color}
+                            description={stat.description}
+                            loading={loading}
+                        />
+                    ))}
                 </div>
             </section>
 
             <section className="dashboard-section">
-                <div className="dashboard-section-heading">
-                    <div>
-                        <h2>Current Inventory</h2>
-                        <p>See the current state of your active groceries</p>
-                    </div>
-                </div>
+                <DashboardSection
+                    title="Current Inventory"
+                    description="See the current state of your active groceries"
+                />
 
                 <div className="dashboard-inventory-grid">
-                    {inventoryStats.map((stat) => {
-                        const Icon = stat.icon;
-
-                        return (
-                            <article
-                                className="dashboard-inventory-card"
-                                key={stat.label}
-                                aria-busy={loading}
-                            >
-                                <span className={`dashboard-stat-icon ${stat.color}`}>
-                                    <Icon size={21} />
-                                </span>
-
-                                <div>
-                                    <p>{stat.label}</p>
-                                    <strong>{loading ? "—" : stat.value}</strong>
-                                </div>
-                            </article>
-                        );
-                    })}
+                    {inventoryStats.map((stat) => (
+                        <DashboardInventoryCard
+                            key={stat.label}
+                            label={stat.label}
+                            value={stat.value}
+                            icon={stat.icon}
+                            color={stat.color}
+                            loading={loading}
+                        />
+                    ))}
                 </div>
             </section>
         </main>
