@@ -6,6 +6,7 @@ import ProtectedRoute from "./routes/ProtectedRoute.tsx";
 import AppLayout from "./layout/AppLayout.tsx";
 import GroceriesPage from "./pages/GroceriesPage.tsx";
 import RecipesPage from "./pages/RecipesPage.tsx";
+import RecipeDetailsPage from "./pages/RecipeDetailsPage.tsx";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
                   <Route path="/" element={ <HomePage /> } />
                   <Route path="/groceries" element={ <GroceriesPage /> } />
                   <Route path="/recipes" element={ <RecipesPage /> } />
+                  <Route path="/recipes/:id" element={ <RecipeDetailsPage /> } />
               </Route>
           </Route>
       </Routes>

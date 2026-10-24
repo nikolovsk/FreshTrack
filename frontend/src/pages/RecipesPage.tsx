@@ -6,6 +6,7 @@ import RecipeGrid from "../components/recipes/RecipeGrid.tsx";
 import RecipeSearch from "../components/recipes/RecipesSearch.tsx";
 import Pagination from "../components/layout/pagination/Pagination.tsx";
 import EmptyState from "../components/EmptyState.tsx";
+import { useNavigate } from "react-router-dom";
 
 function RecipesPage() {
 
@@ -15,6 +16,8 @@ function RecipesPage() {
     const [search, setSearch] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const recipesPerPage = 12;
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         getRecommendedRecipes()
@@ -47,7 +50,7 @@ function RecipesPage() {
     const currentRecipes = filteredRecipes.slice(startIndex, startIndex + recipesPerPage);
 
     const handleRecipeClick = (id: string) => {
-        console.log("Recipe clicked:", id);
+        navigate(`/recipes/${id}`);
     };
 
     return (
