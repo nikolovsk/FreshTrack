@@ -10,6 +10,7 @@ import { getDashboardCharts } from "../services/dashboardChartsService.ts";
 import ConsumedVsWastedChart from "../components/dashboards/ConsumedVsWastedChart.tsx";
 import SpendingOverTimeChart from "../components/dashboards/SpendingOverTimeChart.tsx";
 import type { DashboardPeriod, DashboardSummary } from "../types/dashboard.ts";
+import SpendingByCategoryChart from "../components/dashboards/SpendingByCategoryChart.tsx";
 
 const periodOptions: { label: string; value: DashboardPeriod }[] = [
     { label: "This Month", value: "THIS_MONTH" },
@@ -197,6 +198,16 @@ function DashboardPage() {
 
                             <SpendingOverTimeChart
                                 data={charts?.spendingOverTime ?? []}
+                                loading={chartsLoading}
+                            />
+                        </div>
+
+                        <div className="dashboard-chart-card">
+                            <h3>Spending by Category</h3>
+                            <p>See which grocery categories account for your spending</p>
+
+                            <SpendingByCategoryChart
+                                data={charts?.spendingByCategory ?? []}
                                 loading={chartsLoading}
                             />
                         </div>

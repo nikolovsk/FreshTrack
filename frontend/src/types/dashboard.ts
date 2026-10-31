@@ -34,3 +34,8 @@ export type DashboardSummary = {
 };
 
 export type DashboardPeriod = "THIS_MONTH" | "LAST_MONTH" | "LAST_3_MONTHS" | "ALL_TIME";
+
+export type CategorySpending = {
+    categoryName: string;
+    totalSpending: number;
+};

@@ -118,6 +118,29 @@ public class DashboardServiceImpl implements DashboardService {
         Map<YearMonth, BigDecimal> monthlyConsumedSpending = new TreeMap<>();
         Map<YearMonth, BigDecimal> monthlyWastedSpending = new TreeMap<>();
 
+        Map<String, BigDecimal> categorySpending = new TreeMap<>();
+
+        groceries.stream()
+                .filter(grocery -> grocery.getPurchaseDate() != null)
+                .filter(grocery ->
+                        !grocery.getPurchaseDate().isBefore(startDate)
+                                && !grocery.getPurchaseDate().isAfter(endDate))
+                .filter(grocery -> grocery.getCategory() != null)
+                .filter(grocery -> grocery.getPrice() != null)
+                .forEach(grocery -> categorySpending.merge(
+                        grocery.getCategory().getName(),
+                        grocery.getPrice(),
+                        BigDecimal::add
+                ));
+
+        List<DashboardChartsResponse.CategorySpending> spendingByCategory =
+                categorySpending.entrySet().stream()
+                        .map(entry -> new DashboardChartsResponse.CategorySpending(
+                                entry.getKey(),
+                                entry.getValue()
+                        ))
+                        .toList();
+
         groceries.stream()
                 .filter(grocery -> grocery.getOutcome() == GroceryOutcome.CONSUMED
                         || grocery.getOutcome() == GroceryOutcome.WASTED)
@@ -159,7 +182,7 @@ public class DashboardServiceImpl implements DashboardService {
         long itemsConsumed = countOutcomesInPeriod(groceries, GroceryOutcome.CONSUMED, startDate, endDate);
         long itemsWasted = countOutcomesInPeriod(groceries, GroceryOutcome.WASTED, startDate, endDate);
 
-        return new DashboardChartsResponse(spendingOverTime, itemsConsumed, itemsWasted);
+        return new DashboardChartsResponse(spendingOverTime, itemsConsumed, itemsWasted, spendingByCategory);
     }
 
     private Long getLoggedInUserId() {

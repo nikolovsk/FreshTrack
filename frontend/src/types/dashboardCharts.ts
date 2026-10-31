@@ -4,8 +4,14 @@ export type MonthlySpending = {
     wastedSpending: number;
 };
 
+export type CategorySpending = {
+    categoryName: string;
+    totalSpending: number;
+};
+
 export type DashboardCharts = {
     spendingOverTime: MonthlySpending[];
     itemsConsumed: number;
     itemsWasted: number;
+    spendingByCategory: CategorySpending[];
 };
