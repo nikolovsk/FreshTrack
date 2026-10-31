@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { AlertCircle, CalendarDays } from "lucide-react";
 import { getDashboardSummary, type DashboardPeriod, type DashboardSummary } from "../services/dashboardService.ts";
 import { getDashboardDateRange } from "../utils/dashboardDateUtils.ts";
-import { getHistoricalStats, getInventoryStats } from "../utils/dashboardStats.ts";
+import { getHistoricalStats } from "../utils/dashboardStats.ts";
 import DashboardSection from "../components/dashboards/DashboardSection.tsx";
 import DashboardStatCard from "../components/dashboards/DashboardStatCard.tsx";
-import DashboardInventoryCard from "../components/dashboards/DashboardInventoryCard.tsx";
+import type { DashboardCharts } from "../types/dashboardCharts.ts";
+import { getDashboardCharts } from "../services/dashboardChartsService.ts";
+import ConsumedVsWastedChart from "../components/dashboards/ConsumedVsWastedChart.tsx";
+import SpendingOverTimeChart from "../components/dashboards/SpendingOverTimeChart.tsx";
 
 const periodOptions: { label: string; value: DashboardPeriod }[] = [
     { label: "This Month", value: "THIS_MONTH" },
@@ -20,6 +23,10 @@ function DashboardPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [retryCount, setRetryCount] = useState(0);
+
+    const [charts, setCharts] = useState<DashboardCharts | null>(null);
+    const [chartsLoading, setChartsLoading] = useState(true);
+    const [chartsError, setChartsError] = useState<string | null>(null);
 
     useEffect(() => {
         let isActive = true;
@@ -55,6 +62,40 @@ function DashboardPage() {
         };
     }, [period, retryCount]);
 
+    useEffect(() => {
+        let isActive = true;
+
+        const loadCharts = async () => {
+            setChartsLoading(true);
+            setChartsError(null);
+
+            try {
+                const { startDate, endDate } = getDashboardDateRange(period);
+                const data = await getDashboardCharts(startDate, endDate);
+
+                if (isActive) {
+                    setCharts(data);
+                }
+            } catch {
+                if (isActive) {
+                    setChartsError(
+                        "We couldn't load your charts. Please try again."
+                    );
+                }
+            } finally {
+                if (isActive) {
+                    setChartsLoading(false);
+                }
+            }
+        };
+
+        void loadCharts();
+
+        return () => {
+            isActive = false;
+        };
+    }, [period]);
+
     const formatCurrency = (amount: number) =>
         new Intl.NumberFormat("en-MK", {
             style: "currency",
@@ -63,7 +104,6 @@ function DashboardPage() {
         }).format(amount);
 
     const historicalStats = getHistoricalStats(summary, formatCurrency);
-    const inventoryStats = getInventoryStats(summary);
 
     return (
         <main className="dashboard-page">
@@ -127,22 +167,39 @@ function DashboardPage() {
 
             <section className="dashboard-section">
                 <DashboardSection
-                    title="Current Inventory"
-                    description="See the current state of your active groceries"
+                    title="Your Food Habits"
+                    description="Explore your grocery spending and food-waste patterns"
                 />
 
-                <div className="dashboard-inventory-grid">
-                    {inventoryStats.map((stat) => (
-                        <DashboardInventoryCard
-                            key={stat.label}
-                            label={stat.label}
-                            value={stat.value}
-                            icon={stat.icon}
-                            color={stat.color}
-                            loading={loading}
-                        />
-                    ))}
-                </div>
+                {chartsError ? (
+                    <div className="dashboard-error" role="alert">
+                        <AlertCircle size={20} />
+                        <span>{chartsError}</span>
+                    </div>
+                ) : (
+                    <div className="dashboard-charts-grid">
+                        <div className="dashboard-chart-card">
+                            <h3>Spending Over Time</h3>
+                            <p>Monthly grocery spending</p>
+
+                            <SpendingOverTimeChart
+                                data={charts?.spendingOverTime ?? []}
+                                loading={chartsLoading}
+                            />
+                        </div>
+
+                        <div className="dashboard-chart-card">
+                            <h3>Consumed vs. Wasted</h3>
+                            <p>Grocery entries recorded during this period</p>
+
+                            <ConsumedVsWastedChart
+                                itemsConsumed={charts?.itemsConsumed ?? 0}
+                                itemsWasted={charts?.itemsWasted ?? 0}
+                                loading={chartsLoading}
+                            />
+                        </div>
+                    </div>
+                )}
             </section>
         </main>
     );
