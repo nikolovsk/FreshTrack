@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -90,28 +87,42 @@ public class DashboardServiceImpl implements DashboardService {
         Long userId = getLoggedInUserId();
         List<GroceryItem> groceries = groceryItemRepository.findByUserId(userId);
 
-        Map<YearMonth, BigDecimal> monthlySpending = new TreeMap<>();
+        Map<YearMonth, BigDecimal> monthlyConsumedSpending = new TreeMap<>();
+        Map<YearMonth, BigDecimal> monthlyWastedSpending = new TreeMap<>();
 
         groceries.stream()
-                .filter(grocery ->
-                        !grocery.getPurchaseDate().isBefore(startDate)
-                                && !grocery.getPurchaseDate().isAfter(endDate))
+                .filter(grocery -> grocery.getOutcome() == GroceryOutcome.CONSUMED
+                        || grocery.getOutcome() == GroceryOutcome.WASTED)
+                .filter(grocery -> grocery.getUpdatedAt() != null)
+                .filter(grocery -> {
+                    LocalDate outcomeDate = grocery.getUpdatedAt().toLocalDate();
+                    return !outcomeDate.isBefore(startDate) && !outcomeDate.isAfter(endDate);
+                })
                 .forEach(grocery -> {
-                    YearMonth month = YearMonth.from(grocery.getPurchaseDate());
-                    monthlySpending.merge(month, grocery.getPrice(), BigDecimal::add);
+                    YearMonth month = YearMonth.from(grocery.getUpdatedAt());
+
+                    if (grocery.getOutcome() == GroceryOutcome.CONSUMED) {
+                        monthlyConsumedSpending.merge(month, grocery.getPrice(), BigDecimal::add);
+                    } else {
+                        monthlyWastedSpending.merge(month, grocery.getPrice(), BigDecimal::add);
+                    }
                 });
 
-        List<DashboardChartsResponse.MonthlySpending> spendingOverTime = new java.util.ArrayList<>();
+        List<DashboardChartsResponse.MonthlySpending> spendingOverTime = new ArrayList<>();
 
         YearMonth currentMonth = YearMonth.from(startDate);
         YearMonth lastMonth = YearMonth.from(endDate);
 
         while (!currentMonth.isAfter(lastMonth)) {
+            BigDecimal consumedSpending = monthlyConsumedSpending.getOrDefault(currentMonth, BigDecimal.ZERO);
+            BigDecimal wastedSpending = monthlyWastedSpending.getOrDefault(currentMonth, BigDecimal.ZERO);
+            BigDecimal totalSpending = consumedSpending.add(wastedSpending);
+
             spendingOverTime.add(
                     new DashboardChartsResponse.MonthlySpending(
                             currentMonth.toString(),
-                            monthlySpending.getOrDefault(currentMonth, BigDecimal.ZERO)
-                    )
+                            totalSpending,
+                            wastedSpending)
             );
 
             currentMonth = currentMonth.plusMonths(1);

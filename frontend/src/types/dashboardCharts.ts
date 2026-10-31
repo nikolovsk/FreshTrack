@@ -1,6 +1,7 @@
 export type MonthlySpending = {
     month: string;
     totalSpending: number;
+    wastedSpending: number;
 };
 
 export type DashboardCharts = {

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { MonthlySpending } from "../../types/dashboardCharts.ts";
 
 type SpendingOverTimeChartProps = {
@@ -15,6 +15,10 @@ function SpendingOverTimeChart({ data, loading }: SpendingOverTimeChartProps) {
 
                 return {
                     ...item,
+                    notWastedSpending: Math.max(
+                        0,
+                        item.totalSpending - item.wastedSpending
+                    ),
                     monthLabel: new Intl.DateTimeFormat("en", {
                         month: "short",
                         year: "numeric",
@@ -46,6 +50,9 @@ function SpendingOverTimeChart({ data, loading }: SpendingOverTimeChartProps) {
             </div>
         );
     }
+
+    console.log("Spending chart data:", data);
+    console.log("Processed chart data:", chartData);
 
     return (
         <div className="dashboard-chart-container">
@@ -80,20 +87,28 @@ function SpendingOverTimeChart({ data, loading }: SpendingOverTimeChartProps) {
                     />
 
                     <Tooltip
-                        formatter={(value) => [
-                            formatCurrency(Number(value)),
-                            "Spending",
-                        ]}
+                        formatter={(value) => formatCurrency(Number(value))}
                         contentStyle={{
                             borderRadius: "10px",
                             border: "1px solid #e5e7eb",
                         }}
                     />
 
+                    <Legend verticalAlign="bottom" height={36}/>
+
                     <Bar
-                        dataKey="totalSpending"
-                        name="Spending"
+                        dataKey="notWastedSpending"
+                        name="Consumed"
+                        stackId="spending"
                         fill="#16a34a"
+                        maxBarSize={48}
+                    />
+
+                    <Bar
+                        dataKey="wastedSpending"
+                        name="Wasted"
+                        stackId="spending"
+                        fill="#ef4444"
                         radius={[6, 6, 0, 0]}
                         maxBarSize={48}
                     />

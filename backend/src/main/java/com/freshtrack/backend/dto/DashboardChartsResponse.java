@@ -10,6 +10,7 @@ public record DashboardChartsResponse(
 ) {
     public record MonthlySpending(
             String month,
-            BigDecimal totalSpending
+            BigDecimal totalSpending,
+            BigDecimal wastedSpending
     ) {}
 }

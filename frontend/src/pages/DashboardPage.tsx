@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AlertCircle, CalendarDays } from "lucide-react";
-import { getDashboardSummary, type DashboardPeriod, type DashboardSummary } from "../services/dashboardService.ts";
+import { getDashboardSummary } from "../services/dashboardService.ts";
 import { getDashboardDateRange } from "../utils/dashboardDateUtils.ts";
 import { getHistoricalStats } from "../utils/dashboardStats.ts";
 import DashboardSection from "../components/dashboards/DashboardSection.tsx";
@@ -9,6 +9,7 @@ import type { DashboardCharts } from "../types/dashboardCharts.ts";
 import { getDashboardCharts } from "../services/dashboardChartsService.ts";
 import ConsumedVsWastedChart from "../components/dashboards/ConsumedVsWastedChart.tsx";
 import SpendingOverTimeChart from "../components/dashboards/SpendingOverTimeChart.tsx";
+import type { DashboardPeriod, DashboardSummary } from "../types/dashboard.ts";
 
 const periodOptions: { label: string; value: DashboardPeriod }[] = [
     { label: "This Month", value: "THIS_MONTH" },
@@ -179,22 +180,22 @@ function DashboardPage() {
                 ) : (
                     <div className="dashboard-charts-grid">
                         <div className="dashboard-chart-card">
-                            <h3>Spending Over Time</h3>
-                            <p>Monthly grocery spending</p>
-
-                            <SpendingOverTimeChart
-                                data={charts?.spendingOverTime ?? []}
-                                loading={chartsLoading}
-                            />
-                        </div>
-
-                        <div className="dashboard-chart-card">
                             <h3>Consumed vs. Wasted</h3>
                             <p>Grocery entries recorded during this period</p>
 
                             <ConsumedVsWastedChart
                                 itemsConsumed={charts?.itemsConsumed ?? 0}
                                 itemsWasted={charts?.itemsWasted ?? 0}
+                                loading={chartsLoading}
+                            />
+                        </div>
+
+                        <div className="dashboard-chart-card">
+                            <h3>Spending Over Time</h3>
+                            <p>Monthly grocery spending</p>
+
+                            <SpendingOverTimeChart
+                                data={charts?.spendingOverTime ?? []}
                                 loading={chartsLoading}
                             />
                         </div>
