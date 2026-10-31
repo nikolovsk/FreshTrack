@@ -7,6 +7,7 @@ public record DashboardSummaryResponse(
         BigDecimal totalSpending,
         long itemsConsumed,
         long itemsWasted,
+        BigDecimal totalWastedSpending,
         long freshItems,
         long expiringSoonItems,
         long expiredItems

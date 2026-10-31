@@ -1,7 +1,5 @@
-import { AlertCircle, CheckCircle2, Clock3, Leaf, Package, TrendingDown, Wallet } from "lucide-react";
-
-import type { DashboardSummary } from "../services/dashboardService.ts";
-import type { DashboardHistoricalStat, DashboardInventoryStat } from "../types/dashboard.ts";
+import { CheckCircle2, CircleDollarSign, Package, TrendingDown, Wallet } from "lucide-react";
+import type { DashboardHistoricalStat, DashboardSummary } from "../types/dashboard.ts";
 
 export const getHistoricalStats = (
     summary: DashboardSummary | null,
@@ -22,6 +20,13 @@ export const getHistoricalStats = (
         description: "Money spent on groceries",
     },
     {
+        label: "Money Lost to Waste",
+        value: formatCurrency(summary?.totalWastedSpending ?? 0),
+        icon: CircleDollarSign,
+        color: "red",
+        description: "Value of groceries marked as wasted",
+    },
+    {
         label: "Items Consumed",
         value: summary?.itemsConsumed ?? 0,
         icon: CheckCircle2,
@@ -37,25 +42,3 @@ export const getHistoricalStats = (
     },
 ];
 
-export const getInventoryStats = (
-    summary: DashboardSummary | null
-): DashboardInventoryStat[] => [
-    {
-        label: "Fresh",
-        value: summary?.freshItems ?? 0,
-        icon: Leaf,
-        color: "green",
-    },
-    {
-        label: "Expiring Soon",
-        value: summary?.expiringSoonItems ?? 0,
-        icon: Clock3,
-        color: "orange",
-    },
-    {
-        label: "Expired",
-        value: summary?.expiredItems ?? 0,
-        icon: AlertCircle,
-        color: "red",
-    },
-];

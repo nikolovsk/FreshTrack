@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 @Service
@@ -66,11 +67,14 @@ public class DashboardServiceImpl implements DashboardService {
                 .filter(grocery -> grocery.getStatus() == GroceryStatus.EXPIRED)
                 .count();
 
+        BigDecimal totalWastedSpending = calculateWastedSpending(groceries, startDate, endDate);
+
         return new DashboardSummaryResponse(
                 groceriesPurchased,
                 totalSpending,
                 itemsConsumed,
                 itemsWasted,
+                totalWastedSpending,
                 freshItems,
                 expiringSoonItems,
                 expiredItems
@@ -139,5 +143,18 @@ public class DashboardServiceImpl implements DashboardService {
                     return !outcomeDate.isBefore(startDate) && !outcomeDate.isAfter(endDate);
                 })
                 .count();
+    }
+
+    private BigDecimal calculateWastedSpending(List<GroceryItem> groceries, LocalDate startDate, LocalDate endDate) {
+        return groceries.stream()
+                .filter(grocery -> grocery.getOutcome() == GroceryOutcome.WASTED)
+                .filter(grocery -> grocery.getUpdatedAt() != null)
+                .filter(grocery -> {
+                    LocalDate outcomeDate = grocery.getUpdatedAt().toLocalDate();
+                    return !outcomeDate.isBefore(startDate) && !outcomeDate.isAfter(endDate);
+                })
+                .map(GroceryItem::getPrice)
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
