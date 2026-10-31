@@ -34,6 +34,10 @@ public class DashboardServiceImpl implements DashboardService {
         Long userId = getLoggedInUserId();
         List<GroceryItem> groceries = groceryItemRepository.findByUserId(userId);
 
+        long periodDays = java.time.temporal.ChronoUnit.DAYS.between(startDate, endDate) + 1;
+        LocalDate previousEndDate = startDate.minusDays(1);
+        LocalDate previousStartDate = previousEndDate.minusDays(periodDays - 1);
+
         List<GroceryItem> groceriesInPeriod = groceries.stream()
                 .filter(grocery ->
                         !grocery.getPurchaseDate().isBefore(startDate)
@@ -44,10 +48,31 @@ public class DashboardServiceImpl implements DashboardService {
 
         BigDecimal totalSpending = groceriesInPeriod.stream()
                 .map(GroceryItem::getPrice)
+                .filter(Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         long itemsConsumed = countOutcomesInPeriod(groceries, GroceryOutcome.CONSUMED, startDate, endDate);
         long itemsWasted = countOutcomesInPeriod(groceries, GroceryOutcome.WASTED, startDate, endDate);
+        BigDecimal totalWastedSpending = calculateWastedSpending(groceries, startDate, endDate);
+
+        List<GroceryItem> previousGroceriesInPeriod = groceries.stream()
+                .filter(grocery ->
+                        !grocery.getPurchaseDate().isBefore(previousStartDate)
+                                && !grocery.getPurchaseDate().isAfter(previousEndDate))
+                .toList();
+
+        long previousGroceriesPurchased = previousGroceriesInPeriod.size();
+
+        BigDecimal previousTotalSpending = previousGroceriesInPeriod.stream()
+                .map(GroceryItem::getPrice)
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        long previousItemsConsumed = countOutcomesInPeriod(groceries, GroceryOutcome.CONSUMED, previousStartDate, previousEndDate);
+
+        long previousItemsWasted = countOutcomesInPeriod(groceries, GroceryOutcome.WASTED, previousStartDate, previousEndDate);
+
+        BigDecimal previousTotalWastedSpending = calculateWastedSpending(groceries, previousStartDate, previousEndDate);
 
         long freshItems = groceries.stream()
                 .filter(grocery -> grocery.getOutcome() == GroceryOutcome.ACTIVE)
@@ -64,8 +89,6 @@ public class DashboardServiceImpl implements DashboardService {
                 .filter(grocery -> grocery.getStatus() == GroceryStatus.EXPIRED)
                 .count();
 
-        BigDecimal totalWastedSpending = calculateWastedSpending(groceries, startDate, endDate);
-
         return new DashboardSummaryResponse(
                 groceriesPurchased,
                 totalSpending,
@@ -74,7 +97,12 @@ public class DashboardServiceImpl implements DashboardService {
                 totalWastedSpending,
                 freshItems,
                 expiringSoonItems,
-                expiredItems
+                expiredItems,
+                previousGroceriesPurchased,
+                previousTotalSpending,
+                previousItemsConsumed,
+                previousItemsWasted,
+                previousTotalWastedSpending
         );
     }
 

@@ -10,6 +10,12 @@ public record DashboardSummaryResponse(
         BigDecimal totalWastedSpending,
         long freshItems,
         long expiringSoonItems,
-        long expiredItems
+        long expiredItems,
+
+        long previousGroceriesPurchased,
+        BigDecimal previousTotalSpending,
+        long previousItemsConsumed,
+        long previousItemsWasted,
+        BigDecimal previousTotalWastedSpending
 ) {
 }

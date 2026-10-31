@@ -293,3 +293,35 @@
         grid-template-columns: 1fr;
     }
 }
+
+.dashboard-stat-comparison {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.dashboard-stat-comparison.up {
+    color: #2563eb;
+}
+
+.dashboard-stat-comparison.down {
+    color: #2563eb;
+}
+
+.dashboard-stat-comparison.same {
+    color: #64748b;
+}
+
+.dashboard-stat-comparison.new {
+    color: #7c3aed;
+}
+
+.comparison-caption {
+    color: #879188;
+    font-size: 12px;
+    font-weight: 400;
+}

@@ -160,6 +160,7 @@ function DashboardPage() {
                             icon={stat.icon}
                             color={stat.color}
                             description={stat.description}
+                            comparison={stat.comparison}
                             loading={loading}
                         />
                     ))}
