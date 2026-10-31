@@ -3,6 +3,7 @@ import type { LucideIcon } from "lucide-react";
 export type DashboardComparison = {
     text: string;
     direction: "up" | "down" | "same" | "new";
+    sentiment: "positive" | "negative" | "neutral";
 };
 
 export type DashboardHistoricalStat = {
@@ -11,7 +12,7 @@ export type DashboardHistoricalStat = {
     icon: LucideIcon;
     color: string;
     description: string;
-    comparison: DashboardComparison;
+    comparison: DashboardComparison | null;
 };
 
 export type DashboardSummary = {

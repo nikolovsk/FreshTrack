@@ -8,7 +8,7 @@ type Props = {
     icon: LucideIcon;
     color: string;
     description: string;
-    comparison: DashboardComparison;
+    comparison: DashboardComparison | null;
     loading: boolean;
 };
 
@@ -21,12 +21,13 @@ export default function DashboardStatCard({
                                               comparison,
                                               loading,
                                           }: Props) {
-    const ComparisonIcon = {
-        up: ArrowUp,
-        down: ArrowDown,
-        same: Minus,
-        new: Sparkles,
-    } [comparison.direction];
+    const ComparisonIcon = comparison
+        ? {
+            up: ArrowUp,
+            down: ArrowDown,
+            same: Minus,
+            new: Sparkles,
+        } [comparison.direction] : null;
 
     return (
         <article className="dashboard-stat-card" aria-busy={loading}>
@@ -42,9 +43,9 @@ export default function DashboardStatCard({
                 {loading ? "—" : value}
             </strong>
 
-            {!loading && (
+            {!loading && comparison && ComparisonIcon && (
                 <div
-                    className={`dashboard-stat-comparison ${comparison.direction}`}
+                    className={`dashboard-stat-comparison ${comparison.sentiment}`}
                 >
                     <ComparisonIcon size={14} />
                     <span>{comparison.text}</span>
