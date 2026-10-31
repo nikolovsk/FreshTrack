@@ -1,6 +1,7 @@
 package com.freshtrack.backend.service.impl;
 
 import com.freshtrack.backend.dto.DashboardChartsResponse;
+import com.freshtrack.backend.dto.DashboardInsightsResponse;
 import com.freshtrack.backend.dto.DashboardSummaryResponse;
 import com.freshtrack.backend.entity.GroceryItem;
 import com.freshtrack.backend.enums.GroceryOutcome;
@@ -222,6 +223,101 @@ public class DashboardServiceImpl implements DashboardService {
                 spendingByCategory,
                 monthlyWasteRate
         );
+    }
+
+    @Override
+    public DashboardInsightsResponse getDashboardInsights(LocalDate startDate, LocalDate endDate) {
+        DashboardSummaryResponse summary = getDashboardSummary(startDate, endDate);
+        DashboardChartsResponse charts = getDashboardCharts(startDate, endDate);
+
+        List<DashboardInsightsResponse.Insight> insights = new ArrayList<>();
+
+        long currentOutcomes = summary.itemsConsumed() + summary.itemsWasted();
+        long previousOutcomes = summary.previousItemsConsumed() + summary.previousItemsWasted();
+
+        if (currentOutcomes > 0 && previousOutcomes > 0) {
+            double currentWasteRate = (double) summary.itemsWasted() / currentOutcomes * 100;
+            double previousWasteRate = (double) summary.previousItemsWasted() / previousOutcomes * 100;
+            double difference = currentWasteRate - previousWasteRate;
+
+            if (Math.abs(difference) >= 0.1) {
+                boolean improved = difference < 0;
+
+                insights.add(new DashboardInsightsResponse.Insight(
+                        "WASTE_TREND",
+                        improved ? "Waste rate improved" : "Waste rate increased",
+                        String.format(
+                                Locale.US,
+                                "Your waste rate %s by %.1f percentage points compared with the previous period.",
+                                improved ? "decreased" : "increased",
+                                Math.abs(difference)
+                        ),
+                        String.format(Locale.US, "%.1f%%", currentWasteRate),
+                        improved ? "POSITIVE" : "NEGATIVE"
+                ));
+            } else {
+                insights.add(new DashboardInsightsResponse.Insight(
+                        "WASTE_TREND",
+                        "Waste rate remained stable",
+                        "Your waste rate stayed almost the same compared with the previous period.",
+                        String.format(Locale.US, "%.1f%%", currentWasteRate),
+                        "NEUTRAL"
+                ));
+            }
+        }
+
+        charts.spendingByCategory().stream()
+                .max(Comparator.comparing(DashboardChartsResponse.CategorySpending::totalSpending))
+                .ifPresent(category -> {
+                    insights.add(new DashboardInsightsResponse.Insight(
+                            "TOP_CATEGORY",
+                            "Top spending category",
+                            "This is the category where you spent the most during the selected period.",
+                            category.categoryName(),
+                            "NEUTRAL"
+                    ));
+                });
+
+        if (summary.totalWastedSpending().compareTo(BigDecimal.ZERO) > 0) {
+            insights.add(new DashboardInsightsResponse.Insight(
+                    "MONEY_LOST",
+                    "Money lost to food waste",
+                    "This is the total value of groceries marked as wasted during the selected period.",
+                    summary.totalWastedSpending().toPlainString() + " MKD",
+                    "NEGATIVE"
+            ));
+        }
+
+        BigDecimal currentSpending = summary.totalSpending();
+        BigDecimal previousSpending = summary.previousTotalSpending();
+
+        if (previousSpending.compareTo(BigDecimal.ZERO) > 0) {
+            BigDecimal percentageChange = currentSpending
+                    .subtract(previousSpending)
+                    .multiply(BigDecimal.valueOf(100))
+                    .divide(previousSpending, 1, java.math.RoundingMode.HALF_UP);
+
+            int comparison = percentageChange.compareTo(BigDecimal.ZERO);
+
+            if (comparison != 0) {
+                boolean increased = comparison > 0;
+
+                insights.add(new DashboardInsightsResponse.Insight(
+                        "SPENDING_TREND",
+                        increased ? "Spending increased" : "Spending decreased",
+                        String.format(
+                                Locale.US,
+                                "Your grocery spending %s by %.1f%% compared with the previous period.",
+                                increased ? "increased" : "decreased",
+                                percentageChange.abs().doubleValue()
+                        ),
+                        String.format(Locale.US, "%.1f%%", percentageChange.abs().doubleValue()),
+                        increased ? "NEGATIVE" : "POSITIVE"
+                ));
+            }
+        }
+
+        return new DashboardInsightsResponse(insights);
     }
 
     private Long getLoggedInUserId() {

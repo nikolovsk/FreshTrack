@@ -12,6 +12,9 @@ import SpendingOverTimeChart from "../components/dashboards/SpendingOverTimeChar
 import type { DashboardPeriod, DashboardSummary } from "../types/dashboard.ts";
 import SpendingByCategoryChart from "../components/dashboards/SpendingByCategoryChart.tsx";
 import MonthlyWasteRateChart from "../components/dashboards/MonthlyWasteRateChart.tsx";
+import type { DashboardInsights } from "../types/dashboardInsights.ts";
+import { getDashboardInsights } from "../services/dashboardInsightsService.ts";
+import PersonalizedInsights from "../components/dashboards/PersonalizedInsights.tsx";
 
 const periodOptions: { label: string; value: DashboardPeriod }[] = [
     { label: "This Month", value: "THIS_MONTH" },
@@ -30,6 +33,10 @@ function DashboardPage() {
     const [charts, setCharts] = useState<DashboardCharts | null>(null);
     const [chartsLoading, setChartsLoading] = useState(true);
     const [chartsError, setChartsError] = useState<string | null>(null);
+
+    const [insights, setInsights] = useState<DashboardInsights | null>(null);
+    const [insightsLoading, setInsightsLoading] = useState(true);
+    const [insightsError, setInsightsError] = useState<string | null>(null);
 
     useEffect(() => {
         let isActive = true;
@@ -93,6 +100,38 @@ function DashboardPage() {
         };
 
         void loadCharts();
+
+        return () => {
+            isActive = false;
+        };
+    }, [period]);
+
+    useEffect(() => {
+        let isActive = true;
+
+        const loadInsights = async () => {
+            setInsightsLoading(true);
+            setInsightsError(null);
+
+            try {
+                const { startDate, endDate } = getDashboardDateRange(period);
+                const data = await getDashboardInsights(startDate, endDate);
+
+                if (isActive) {
+                    setInsights(data);
+                }
+            } catch {
+                if (isActive) {
+                    setInsightsError("We couldn't load your personalized insights. Please try again.");
+                }
+            } finally {
+                if (isActive) {
+                    setInsightsLoading(false);
+                }
+            }
+        };
+
+        void loadInsights();
 
         return () => {
             isActive = false;
@@ -223,6 +262,25 @@ function DashboardPage() {
                             />
                         </div>
                     </div>
+                )}
+            </section>
+
+            <section className="dashboard-section">
+                <DashboardSection
+                    title="Personalized Insights"
+                    description="Discover patterns and opportunities based on your grocery activity"
+                />
+
+                {insightsError ? (
+                    <div className="dashboard-error" role="alert">
+                        <AlertCircle size={20} />
+                        <span>{insightsError}</span>
+                    </div>
+                ) : (
+                    <PersonalizedInsights
+                        insights={insights?.insights ?? []}
+                        loading={insightsLoading}
+                    />
                 )}
             </section>
         </main>

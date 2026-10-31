@@ -1,6 +1,7 @@
 package com.freshtrack.backend.controller;
 
 import com.freshtrack.backend.dto.DashboardChartsResponse;
+import com.freshtrack.backend.dto.DashboardInsightsResponse;
 import com.freshtrack.backend.dto.DashboardSummaryResponse;
 import com.freshtrack.backend.service.DashboardService;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +34,13 @@ public class DashboardController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
     ) {
         return dashboardService.getDashboardCharts(startDate, endDate);
+    }
+
+    @GetMapping("/insights")
+    public DashboardInsightsResponse getDashboardInsights(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ) {
+        return dashboardService.getDashboardInsights(startDate, endDate);
     }
 }
