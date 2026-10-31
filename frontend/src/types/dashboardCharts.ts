@@ -9,9 +9,17 @@ export type CategorySpending = {
     totalSpending: number;
 };
 
+export type MonthlyWasteRate = {
+    month: string;
+    itemsConsumed: number;
+    itemsWasted: number;
+    wasteRate: number;
+};
+
 export type DashboardCharts = {
     spendingOverTime: MonthlySpending[];
     itemsConsumed: number;
     itemsWasted: number;
     spendingByCategory: CategorySpending[];
+    monthlyWasteRate: MonthlyWasteRate[];
 };

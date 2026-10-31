@@ -69,9 +69,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         long previousItemsConsumed = countOutcomesInPeriod(groceries, GroceryOutcome.CONSUMED, previousStartDate, previousEndDate);
-
         long previousItemsWasted = countOutcomesInPeriod(groceries, GroceryOutcome.WASTED, previousStartDate, previousEndDate);
-
         BigDecimal previousTotalWastedSpending = calculateWastedSpending(groceries, previousStartDate, previousEndDate);
 
         long freshItems = groceries.stream()
@@ -118,6 +116,9 @@ public class DashboardServiceImpl implements DashboardService {
         Map<YearMonth, BigDecimal> monthlyConsumedSpending = new TreeMap<>();
         Map<YearMonth, BigDecimal> monthlyWastedSpending = new TreeMap<>();
 
+        Map<YearMonth, Long> monthlyConsumedCount = new TreeMap<>();
+        Map<YearMonth, Long> monthlyWastedCount = new TreeMap<>();
+
         Map<String, BigDecimal> categorySpending = new TreeMap<>();
 
         groceries.stream()
@@ -153,9 +154,17 @@ public class DashboardServiceImpl implements DashboardService {
                     YearMonth month = YearMonth.from(grocery.getUpdatedAt());
 
                     if (grocery.getOutcome() == GroceryOutcome.CONSUMED) {
-                        monthlyConsumedSpending.merge(month, grocery.getPrice(), BigDecimal::add);
+                        monthlyConsumedCount.merge(month, 1L, Long::sum);
+
+                        if (grocery.getPrice() != null) {
+                            monthlyConsumedSpending.merge(month, grocery.getPrice(), BigDecimal::add);
+                        }
                     } else {
-                        monthlyWastedSpending.merge(month, grocery.getPrice(), BigDecimal::add);
+                        monthlyWastedCount.merge(month, 1L, Long::sum);
+
+                        if (grocery.getPrice() != null) {
+                            monthlyWastedSpending.merge(month, grocery.getPrice(), BigDecimal::add);
+                        }
                     }
                 });
 
@@ -173,7 +182,31 @@ public class DashboardServiceImpl implements DashboardService {
                     new DashboardChartsResponse.MonthlySpending(
                             currentMonth.toString(),
                             totalSpending,
-                            wastedSpending)
+                            wastedSpending
+                    )
+            );
+
+            currentMonth = currentMonth.plusMonths(1);
+        }
+
+        List<DashboardChartsResponse.MonthlyWasteRate> monthlyWasteRate = new ArrayList<>();
+        currentMonth = YearMonth.from(startDate);
+
+        while (!currentMonth.isAfter(lastMonth)) {
+            long consumed = monthlyConsumedCount.getOrDefault(currentMonth, 0L);
+            long wasted = monthlyWastedCount.getOrDefault(currentMonth, 0L);
+
+            long totalOutcomes = consumed + wasted;
+
+            double wasteRate = totalOutcomes == 0 ? 0.0 : (double) wasted / totalOutcomes * 100;
+
+            monthlyWasteRate.add(
+                    new DashboardChartsResponse.MonthlyWasteRate(
+                            currentMonth.toString(),
+                            consumed,
+                            wasted,
+                            wasteRate
+                    )
             );
 
             currentMonth = currentMonth.plusMonths(1);
@@ -182,7 +215,13 @@ public class DashboardServiceImpl implements DashboardService {
         long itemsConsumed = countOutcomesInPeriod(groceries, GroceryOutcome.CONSUMED, startDate, endDate);
         long itemsWasted = countOutcomesInPeriod(groceries, GroceryOutcome.WASTED, startDate, endDate);
 
-        return new DashboardChartsResponse(spendingOverTime, itemsConsumed, itemsWasted, spendingByCategory);
+        return new DashboardChartsResponse(
+                spendingOverTime,
+                itemsConsumed,
+                itemsWasted,
+                spendingByCategory,
+                monthlyWasteRate
+        );
     }
 
     private Long getLoggedInUserId() {
@@ -202,7 +241,8 @@ public class DashboardServiceImpl implements DashboardService {
                 .filter(grocery -> grocery.getUpdatedAt() != null)
                 .filter(grocery -> {
                     LocalDate outcomeDate = grocery.getUpdatedAt().toLocalDate();
-                    return !outcomeDate.isBefore(startDate) && !outcomeDate.isAfter(endDate);
+                    return !outcomeDate.isBefore(startDate)
+                            && !outcomeDate.isAfter(endDate);
                 })
                 .count();
     }
@@ -213,7 +253,8 @@ public class DashboardServiceImpl implements DashboardService {
                 .filter(grocery -> grocery.getUpdatedAt() != null)
                 .filter(grocery -> {
                     LocalDate outcomeDate = grocery.getUpdatedAt().toLocalDate();
-                    return !outcomeDate.isBefore(startDate) && !outcomeDate.isAfter(endDate);
+                    return !outcomeDate.isBefore(startDate)
+                            && !outcomeDate.isAfter(endDate);
                 })
                 .map(GroceryItem::getPrice)
                 .filter(Objects::nonNull)

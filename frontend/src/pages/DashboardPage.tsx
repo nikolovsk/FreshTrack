@@ -11,6 +11,7 @@ import ConsumedVsWastedChart from "../components/dashboards/ConsumedVsWastedChar
 import SpendingOverTimeChart from "../components/dashboards/SpendingOverTimeChart.tsx";
 import type { DashboardPeriod, DashboardSummary } from "../types/dashboard.ts";
 import SpendingByCategoryChart from "../components/dashboards/SpendingByCategoryChart.tsx";
+import MonthlyWasteRateChart from "../components/dashboards/MonthlyWasteRateChart.tsx";
 
 const periodOptions: { label: string; value: DashboardPeriod }[] = [
     { label: "This Month", value: "THIS_MONTH" },
@@ -208,6 +209,16 @@ function DashboardPage() {
 
                             <SpendingByCategoryChart
                                 data={charts?.spendingByCategory ?? []}
+                                loading={chartsLoading}
+                            />
+                        </div>
+
+                        <div className="dashboard-chart-card">
+                            <h3>Monthly Waste Rate</h3>
+                            <p>Track the percentage of groceries wasted each month</p>
+
+                            <MonthlyWasteRateChart
+                                data={charts?.monthlyWasteRate ?? []}
                                 loading={chartsLoading}
                             />
                         </div>
